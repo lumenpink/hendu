@@ -1,4 +1,4 @@
-use hendu::ai::gemini::{GeminiClient, GenerateContentResponse};
+use hendu::ai::gemini::{GeminiClient, GeminiError, GenerateContentResponse};
 use hendu::config::Config;
 use std::collections::HashMap;
 
@@ -13,6 +13,7 @@ fn test_config_gemini_defaults() {
         "https://generativelanguage.googleapis.com"
     );
     assert!(config.gemini_api_key.is_none());
+    assert!(config.audio_transcription_enabled);
 }
 
 #[test]
@@ -22,14 +23,45 @@ fn test_config_gemini_custom() {
     env.insert("GEMINI_MODEL".to_string(), "gemini-3.8-flash".to_string());
     env.insert(
         "GEMINI_ENDPOINT".to_string(),
-        "https://custom-proxy.internal".to_string(),
+        "https://custom-proxy.internal/".to_string(),
     );
 
     let config = Config::from_lookup(|k| env.get(k).cloned()).unwrap();
 
     assert_eq!(config.gemini_api_key.as_deref(), Some("test-secret-key"));
     assert_eq!(config.gemini_model, "gemini-3.8-flash");
-    assert_eq!(config.gemini_endpoint, "https://custom-proxy.internal");
+    assert_eq!(config.gemini_endpoint, "https://custom-proxy.internal/");
+}
+
+#[test]
+fn test_config_audio_transcription_flags() {
+    for false_val in &["0", "false", "False", "no", "NO", " false "] {
+        let mut env = HashMap::new();
+        env.insert(
+            "HENDU_AUDIO_TRANSCRIPTION_ENABLED".to_string(),
+            false_val.to_string(),
+        );
+        let config = Config::from_lookup(|k| env.get(k).cloned()).unwrap();
+        assert!(
+            !config.audio_transcription_enabled,
+            "Valor '{}' deveria desativar a transcrição",
+            false_val
+        );
+    }
+
+    for true_val in &["1", "true", "TRUE", "yes", "anything"] {
+        let mut env = HashMap::new();
+        env.insert(
+            "HENDU_AUDIO_TRANSCRIPTION_ENABLED".to_string(),
+            true_val.to_string(),
+        );
+        let config = Config::from_lookup(|k| env.get(k).cloned()).unwrap();
+        assert!(
+            config.audio_transcription_enabled,
+            "Valor '{}' deveria ativar a transcrição",
+            true_val
+        );
+    }
 }
 
 #[test]
@@ -79,4 +111,35 @@ fn test_parse_gemini_empty_response() {
     let resp: GenerateContentResponse =
         serde_json::from_str(raw_json).expect("parsing deve funcionar");
     assert!(resp.extract_text().is_none());
+}
+
+#[test]
+fn test_parse_gemini_candidate_without_parts() {
+    let raw_json = r#"{
+        "candidates": [
+            {
+                "content": {
+                    "parts": []
+                }
+            }
+        ]
+    }"#;
+    let resp: GenerateContentResponse =
+        serde_json::from_str(raw_json).expect("parsing deve funcionar");
+    assert!(resp.extract_text().is_none());
+}
+
+#[tokio::test]
+async fn test_transcribe_audio_missing_api_key_returns_error() {
+    let client = GeminiClient::new(
+        None,
+        "gemini-3.5-flash-lite".to_string(),
+        "https://generativelanguage.googleapis.com".to_string(),
+    );
+
+    let res = client.transcribe_audio(b"audio-data", "audio/ogg").await;
+    match res {
+        Err(GeminiError::MissingApiKey) => {}
+        other => panic!("Esperado MissingApiKey, recebido: {:?}", other),
+    }
 }
