@@ -26,6 +26,13 @@ fn test_stats_increments() {
 }
 
 #[test]
+fn test_stats_default_impl() {
+    let stats = BotStats::default();
+    assert_eq!(stats.total_processed(), 0);
+    assert!(stats.uptime_formatted().contains('s'));
+}
+
+#[test]
 fn test_handle_command_help() {
     let stats = BotStats::new();
 
@@ -37,6 +44,9 @@ fn test_handle_command_help() {
 
     let res_alt = handle_command("  !help  ", &stats);
     assert!(res_alt.is_some());
+
+    let res_caps = handle_command("!AJUDA", &stats);
+    assert!(res_caps.is_some());
 }
 
 #[test]
@@ -48,6 +58,9 @@ fn test_handle_command_about() {
     let text = res.unwrap();
     assert!(text.contains("Guarani"));
     assert!(text.contains("acessibilidade"));
+
+    let res_alt = handle_command("!ABOUT", &stats);
+    assert!(res_alt.is_some());
 }
 
 #[test]
@@ -61,6 +74,9 @@ fn test_handle_command_status() {
     assert!(text.contains("Status do Hendu"));
     assert!(text.contains("Tempo ativo:"));
     assert!(text.contains("Áudios transcritos: 1"));
+
+    let res_caps = handle_command("  !STATUS  ", &stats);
+    assert!(res_caps.is_some());
 }
 
 #[test]
@@ -79,4 +95,6 @@ fn test_handle_command_non_command() {
     assert!(handle_command("Bom dia pessoal!", &stats).is_none());
     assert!(handle_command("", &stats).is_none());
     assert!(handle_command("!outro_comando_qualquer", &stats).is_none());
+    assert!(handle_command("!ajuda com outra frase", &stats).is_none());
+    assert!(handle_command("!!ping", &stats).is_none());
 }
