@@ -78,7 +78,9 @@ async fn test_describe_sticker_missing_api_key_returns_error() {
         "https://generativelanguage.googleapis.com".to_string(),
     );
 
-    let res = client.describe_sticker(b"sticker-bytes", "image/webp").await;
+    let res = client
+        .describe_sticker(b"sticker-bytes", "image/webp")
+        .await;
     match res {
         Err(GeminiError::MissingApiKey) => {}
         other => panic!("Esperado MissingApiKey, recebido: {:?}", other),
