@@ -1,0 +1,95 @@
+use std::fs;
+use std::path::Path;
+
+#[test]
+fn test_dockerfile_kollontai_spec() {
+    let dockerfile_path = Path::new("Dockerfile");
+    assert!(
+        dockerfile_path.exists(),
+        "Dockerfile deve existir na raiz do repositorio"
+    );
+
+    let content = fs::read_to_string(dockerfile_path).expect("Falha ao ler Dockerfile");
+
+    assert!(
+        content.contains("AS builder") || content.contains("as builder"),
+        "Dockerfile deve utilizar multi-stage build com stage builder"
+    );
+    assert!(
+        content.contains("FROM scratch"),
+        "Dockerfile deve utilizar imagem final scratch para perfil Kollontai"
+    );
+    assert!(
+        content.contains("ca-certificates.crt"),
+        "Dockerfile deve copiar os certificados CA para comunicacao TLS HTTPS com a API Gemini"
+    );
+    assert!(
+        content.contains("ENTRYPOINT [\"/hendu\"]"),
+        "Dockerfile deve declarar ENTRYPOINT [\"/hendu\"]"
+    );
+}
+
+#[test]
+fn test_compose_yaml_spec() {
+    let compose_path = Path::new("compose.yaml");
+    assert!(
+        compose_path.exists(),
+        "compose.yaml deve existir na raiz do repositorio"
+    );
+
+    let content = fs::read_to_string(compose_path).expect("Falha ao ler compose.yaml");
+
+    assert!(
+        content.contains("hendu:"),
+        "compose.yaml deve declarar o servico hendu"
+    );
+    assert!(
+        content.contains("./data:/data"),
+        "compose.yaml deve montar o volume persistente ./data:/data"
+    );
+    assert!(
+        content.contains(".env"),
+        "compose.yaml deve carregar o arquivo .env"
+    );
+}
+
+#[test]
+fn test_env_example_spec() {
+    let env_path = Path::new(".env.example");
+    assert!(
+        env_path.exists(),
+        ".env.example deve existir na raiz do repositorio"
+    );
+
+    let content = fs::read_to_string(env_path).expect("Falha ao ler .env.example");
+
+    assert!(
+        content.contains("GEMINI_API_KEY="),
+        ".env.example deve conter GEMINI_API_KEY"
+    );
+    assert!(
+        content.contains("HENDU_GROUP_MODE="),
+        ".env.example deve conter HENDU_GROUP_MODE"
+    );
+    assert!(
+        content.contains("HENDU_DB_PATH="),
+        ".env.example deve conter HENDU_DB_PATH"
+    );
+}
+
+#[test]
+fn test_dockerignore_spec() {
+    let dockerignore_path = Path::new(".dockerignore");
+    assert!(
+        dockerignore_path.exists(),
+        ".dockerignore deve existir na raiz do repositorio"
+    );
+
+    let content = fs::read_to_string(dockerignore_path).expect("Falha ao ler .dockerignore");
+
+    assert!(
+        content.contains("target"),
+        ".dockerignore deve ignorar target/"
+    );
+    assert!(content.contains(".git"), ".dockerignore deve ignorar .git/");
+}
