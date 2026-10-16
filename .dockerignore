@@ -1,0 +1,10 @@
+target/
+data/
+.git/
+.antigravity/
+.gost/
+tests/
+docs/
+*.md
+LICENSE*
+VERSION

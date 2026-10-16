@@ -1,0 +1,16 @@
+services:
+  hendu:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hendu:latest
+    container_name: hendu
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./data:/data
+    deploy:
+      resources:
+        limits:
+          memory: 64M
