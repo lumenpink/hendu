@@ -1,6 +1,6 @@
 use crate::ai::GeminiClient;
 use crate::commands::{
-    handle_command, is_demand_trigger, is_group_chat, should_process_spontaneous, DemandAction,
+    DemandAction, handle_command, is_demand_trigger, is_group_chat, should_process_spontaneous,
 };
 use crate::config::Config;
 use crate::stats::BotStats;
