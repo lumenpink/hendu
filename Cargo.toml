@@ -3,4 +3,24 @@ name = "hendu"
 version = "0.1.0"
 edition = "2024"
 
+[lib]
+name = "hendu"
+path = "src/lib.rs"
+
+[[bin]]
+name = "hendu"
+path = "src/main.rs"
+
 [dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "signal"] }
+whatsapp-rust = { version = "0.7.0", default-features = false, features = [
+    "sqlite-storage",
+    "tokio-transport",
+    "tokio-runtime",
+    "ureq-client",
+    "tokio-native",
+    "signal"
+] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+thiserror = "2.0"
