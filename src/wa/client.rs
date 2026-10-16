@@ -1,5 +1,7 @@
 use crate::ai::GeminiClient;
-use crate::commands::handle_command;
+use crate::commands::{
+    handle_command, is_demand_trigger, is_group_chat, should_process_spontaneous, DemandAction,
+};
 use crate::config::Config;
 use crate::stats::BotStats;
 use std::path::Path;
@@ -45,6 +47,7 @@ impl WhatsAppService {
         ));
         let stats = Arc::new(BotStats::new());
 
+        let group_mode = self.config.group_mode;
         let audio_transcription_enabled = self.config.audio_transcription_enabled;
         let image_description_enabled = self.config.image_description_enabled;
         let sticker_description_enabled = self.config.sticker_description_enabled;
@@ -60,9 +63,13 @@ impl WhatsAppService {
                 let gemini = Arc::clone(&gemini_client);
                 let stats = Arc::clone(&stats);
                 async move {
-                    // 1. Tratamento de mensagens de texto e comandos comunitários
+                    let chat_jid = ctx.info.source.chat.to_string();
+                    let is_group = is_group_chat(&chat_jid);
+
+                    // 1. Tratamento de mensagens de texto, comandos comunitários e gatilhos sob demanda
                     if let Some(text) = ctx.message.text_content() {
                         info!("Mensagem de texto recebida: {}", text);
+
                         if let Some(reply) = handle_command(text, &stats) {
                             info!("Executando resposta para comando de texto...");
                             if let Err(e) = ctx.reply(reply).await {
@@ -70,6 +77,160 @@ impl WhatsAppService {
                             }
                             return;
                         }
+
+                        if let Some(action) = is_demand_trigger(text) {
+                            info!("Gatilho sob demanda detectado: {:?}", action);
+                            let quoted = ctx
+                                .message
+                                .extended_text_message
+                                .as_option()
+                                .and_then(|m| m.context_info.as_option())
+                                .and_then(|ci| ci.quoted_message.as_option());
+
+                            match quoted {
+                                Some(q) => match action {
+                                    DemandAction::Transcribe => {
+                                        if !audio_transcription_enabled {
+                                            let _ = ctx
+                                                .reply_quoting(
+                                                    "⚠️ Transcrição de áudio está desativada na configuração.",
+                                                )
+                                                .await;
+                                            return;
+                                        }
+
+                                        if let Some(audio) = q.audio_message.as_option() {
+                                            let mime = audio
+                                                .mimetype
+                                                .as_deref()
+                                                .unwrap_or("audio/ogg; codecs=opus")
+                                                .to_string();
+                                            info!("Baixando áudio citado sob demanda...");
+                                            match ctx.client.download(audio).await {
+                                                Ok(bytes) => {
+                                                    match gemini.transcribe_audio(&bytes, &mime).await {
+                                                        Ok(transcription) => {
+                                                            stats.inc_audio();
+                                                            let reply_body = format!(
+                                                                "🎙️ Transcrição:\n\n{transcription}"
+                                                            );
+                                                            if let Err(e) = ctx.reply_quoting(reply_body).await {
+                                                                error!("Falha ao responder transcrição sob demanda: {:?}", e);
+                                                            }
+                                                        }
+                                                        Err(e) => {
+                                                            warn!("Falha Gemini áudio sob demanda: {:?}", e)
+                                                        }
+                                                    }
+                                                }
+                                                Err(e) => {
+                                                    error!("Falha ao baixar áudio citado: {:?}", e)
+                                                }
+                                            }
+                                        } else {
+                                            let _ = ctx
+                                                .reply_quoting(
+                                                    "⚠️ A mensagem respondida não contém um áudio para transcrição.",
+                                                )
+                                                .await;
+                                        }
+                                    }
+                                    DemandAction::Describe => {
+                                        if let Some(image) = q.image_message.as_option() {
+                                            if !image_description_enabled {
+                                                let _ = ctx
+                                                    .reply_quoting(
+                                                        "⚠️ Audiodescrição de imagens está desativada.",
+                                                    )
+                                                    .await;
+                                                return;
+                                            }
+                                            let mime = image
+                                                .mimetype
+                                                .as_deref()
+                                                .unwrap_or("image/jpeg")
+                                                .to_string();
+                                            info!("Baixando imagem citada sob demanda...");
+                                            match ctx.client.download(image).await {
+                                                Ok(bytes) => {
+                                                    match gemini.describe_image(&bytes, &mime).await {
+                                                        Ok(desc) => {
+                                                            stats.inc_image();
+                                                            let reply_body = format!(
+                                                                "🖼️ Audiodescrição:\n\n{desc}"
+                                                            );
+                                                            if let Err(e) = ctx.reply_quoting(reply_body).await {
+                                                                error!("Falha ao responder audiodescrição sob demanda: {:?}", e);
+                                                            }
+                                                        }
+                                                        Err(e) => {
+                                                            warn!("Falha Gemini imagem sob demanda: {:?}", e)
+                                                        }
+                                                    }
+                                                }
+                                                Err(e) => {
+                                                    error!("Falha ao baixar imagem citada: {:?}", e)
+                                                }
+                                            }
+                                        } else if let Some(sticker) = q.sticker_message.as_option() {
+                                            if !sticker_description_enabled {
+                                                let _ = ctx
+                                                    .reply_quoting(
+                                                        "⚠️ Descrição de figurinhas está desativada.",
+                                                    )
+                                                    .await;
+                                                return;
+                                            }
+                                            let mime = sticker
+                                                .mimetype
+                                                .as_deref()
+                                                .unwrap_or("image/webp")
+                                                .to_string();
+                                            info!("Baixando figurinha citada sob demanda...");
+                                            match ctx.client.download(sticker).await {
+                                                Ok(bytes) => {
+                                                    match gemini.describe_sticker(&bytes, &mime).await {
+                                                        Ok(desc) => {
+                                                            stats.inc_sticker();
+                                                            let reply_body =
+                                                                format!("🎭 Figurinha:\n\n{desc}");
+                                                            if let Err(e) = ctx.reply_quoting(reply_body).await {
+                                                                error!("Falha ao responder figurinha sob demanda: {:?}", e);
+                                                            }
+                                                        }
+                                                        Err(e) => {
+                                                            warn!("Falha Gemini figurinha sob demanda: {:?}", e)
+                                                        }
+                                                    }
+                                                }
+                                                Err(e) => {
+                                                    error!("Falha ao baixar figurinha citada: {:?}", e)
+                                                }
+                                            }
+                                        } else {
+                                            let _ = ctx
+                                                .reply_quoting(
+                                                    "⚠️ A mensagem respondida não contém imagem ou figurinha para audiodescrição.",
+                                                )
+                                                .await;
+                                        }
+                                    }
+                                },
+                                None => {
+                                    let _ = ctx
+                                        .reply_quoting(
+                                            "💡 Responda a um áudio, imagem ou figurinha com !transcrever ou !descrever.",
+                                        )
+                                        .await;
+                                }
+                            }
+                            return;
+                        }
+                    }
+
+                    // 2. Verificação de permissão para processamento espontâneo de mídia
+                    if !should_process_spontaneous(is_group, group_mode) {
+                        return;
                     }
 
                     // 2. Tratamento de mensagens de áudio (PTT ou arquivo de áudio)

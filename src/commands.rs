@@ -1,5 +1,29 @@
 use crate::stats::BotStats;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum DemandAction {
+    Transcribe,
+    Describe,
+}
+
+pub fn is_demand_trigger(text: &str) -> Option<DemandAction> {
+    let trimmed = text.trim();
+    let lower = trimmed.to_lowercase();
+    match lower.as_str() {
+        "!transcrever" => Some(DemandAction::Transcribe),
+        "!descrever" | "!ver" => Some(DemandAction::Describe),
+        _ => None,
+    }
+}
+
+pub fn should_process_spontaneous(is_group: bool, mode: crate::config::GroupMode) -> bool {
+    !is_group || mode == crate::config::GroupMode::Automatic
+}
+
+pub fn is_group_chat(chat_str: &str) -> bool {
+    chat_str.ends_with("@g.us")
+}
+
 pub fn handle_command(input: &str, stats: &BotStats) -> Option<String> {
     let trimmed = input.trim();
     let lower = trimmed.to_lowercase();
@@ -16,6 +40,8 @@ pub fn handle_command(input: &str, stats: &BotStats) -> Option<String> {
             • `!ajuda`: Exibe esta mensagem de apoio.\n\
             • `!sobre`: Explica a missão e o nome do bot.\n\
             • `!status`: Mostra o tempo ativo e estatísticas da sessão.\n\
+            • `!transcrever`: Transcreve o áudio respondido/citado.\n\
+            • `!descrever` / `!ver`: Audiodescreve a imagem ou figurinha respondida.\n\
             • `!ping`: Testa se o bot está online."
                 .to_string(),
         ),

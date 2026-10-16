@@ -1,6 +1,13 @@
 use std::env;
 use std::path::PathBuf;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum GroupMode {
+    #[default]
+    Automatic,
+    OnDemand,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Config {
     pub db_path: PathBuf,
@@ -11,6 +18,7 @@ pub struct Config {
     pub audio_transcription_enabled: bool,
     pub image_description_enabled: bool,
     pub sticker_description_enabled: bool,
+    pub group_mode: GroupMode,
 }
 
 impl Config {
@@ -39,7 +47,8 @@ impl Config {
     where
         F: Fn(&str) -> Option<String>,
     {
-        let db_path_str = lookup("HENDU_DB_PATH").unwrap_or_else(|| "data/whatsapp.db".to_string());
+        let db_path_str =
+            lookup("HENDU_DB_PATH").unwrap_or_else(|| "data/whatsapp.db".to_string());
         if db_path_str.trim().is_empty() {
             return Err("HENDU_DB_PATH cannot be empty".to_string());
         }
@@ -64,6 +73,14 @@ impl Config {
         let sticker_description_enabled =
             Self::parse_bool_env(lookup("HENDU_STICKER_DESCRIPTION_ENABLED"), true);
 
+        let group_mode = match lookup("HENDU_GROUP_MODE")
+            .map(|v| v.trim().to_lowercase())
+            .as_deref()
+        {
+            Some("ondemand" | "on_demand" | "on-demand" | "manual") => GroupMode::OnDemand,
+            _ => GroupMode::Automatic,
+        };
+
         Ok(Self {
             db_path,
             log_level,
@@ -73,6 +90,7 @@ impl Config {
             audio_transcription_enabled,
             image_description_enabled,
             sticker_description_enabled,
+            group_mode,
         })
     }
 }
