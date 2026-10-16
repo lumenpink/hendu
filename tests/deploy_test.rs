@@ -27,6 +27,10 @@ fn test_dockerfile_kollontai_spec() {
         content.contains("ENTRYPOINT [\"/hendu\"]"),
         "Dockerfile deve declarar ENTRYPOINT [\"/hendu\"]"
     );
+    assert!(
+        content.contains("USER 10001:10001"),
+        "Dockerfile deve executar sob usuario nao-root (10001:10001) por seguranca"
+    );
 }
 
 #[test]
@@ -51,6 +55,10 @@ fn test_compose_yaml_spec() {
         content.contains(".env"),
         "compose.yaml deve carregar o arquivo .env"
     );
+    assert!(
+        content.contains("memory: 64M"),
+        "compose.yaml deve limitar o consumo de memoria em 64M para perfil Kollontai"
+    );
 }
 
 #[test]
@@ -74,6 +82,10 @@ fn test_env_example_spec() {
     assert!(
         content.contains("HENDU_DB_PATH="),
         ".env.example deve conter HENDU_DB_PATH"
+    );
+    assert!(
+        content.contains("gemini-3.5-flash-lite"),
+        ".env.example deve recomendar o modelo oficial gemini-3.5-flash-lite"
     );
 }
 
