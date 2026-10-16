@@ -14,8 +14,14 @@ fn test_config_vision_defaults() {
 #[test]
 fn test_config_vision_flags_disabled() {
     let mut env = HashMap::new();
-    env.insert("HENDU_IMAGE_DESCRIPTION_ENABLED".to_string(), "false".to_string());
-    env.insert("HENDU_STICKER_DESCRIPTION_ENABLED".to_string(), "0".to_string());
+    env.insert(
+        "HENDU_IMAGE_DESCRIPTION_ENABLED".to_string(),
+        "false".to_string(),
+    );
+    env.insert(
+        "HENDU_STICKER_DESCRIPTION_ENABLED".to_string(),
+        "0".to_string(),
+    );
 
     let config = Config::from_lookup(|k| env.get(k).cloned()).unwrap();
 
