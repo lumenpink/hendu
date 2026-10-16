@@ -1,5 +1,7 @@
 use crate::ai::GeminiClient;
+use crate::commands::handle_command;
 use crate::config::Config;
+use crate::stats::BotStats;
 use std::path::Path;
 use std::sync::Arc;
 use tracing::{error, info, warn};
@@ -41,6 +43,8 @@ impl WhatsAppService {
             self.config.gemini_model.clone(),
             self.config.gemini_endpoint.clone(),
         ));
+        let stats = Arc::new(BotStats::new());
+
         let audio_transcription_enabled = self.config.audio_transcription_enabled;
         let image_description_enabled = self.config.image_description_enabled;
         let sticker_description_enabled = self.config.sticker_description_enabled;
@@ -54,15 +58,17 @@ impl WhatsAppService {
             })
             .on_message(move |ctx| {
                 let gemini = Arc::clone(&gemini_client);
+                let stats = Arc::clone(&stats);
                 async move {
-                    // 1. Tratamento de mensagens de texto
+                    // 1. Tratamento de mensagens de texto e comandos comunitários
                     if let Some(text) = ctx.message.text_content() {
                         info!("Mensagem de texto recebida: {}", text);
-                        if text.trim() == "ping" {
-                            info!("Respondendo a ping com pong...");
-                            if let Err(e) = ctx.reply("pong").await {
-                                error!("Falha ao responder ping: {:?}", e);
+                        if let Some(reply) = handle_command(text, &stats) {
+                            info!("Executando resposta para comando de texto...");
+                            if let Err(e) = ctx.reply(reply).await {
+                                error!("Falha ao responder comando: {:?}", e);
                             }
+                            return;
                         }
                     }
 
@@ -86,6 +92,7 @@ impl WhatsAppService {
 
                                 match gemini.transcribe_audio(&bytes, &mime).await {
                                     Ok(transcription) => {
+                                        stats.inc_audio();
                                         info!(
                                             "Transcrição gerada com sucesso ({} caracteres)",
                                             transcription.len()
@@ -130,6 +137,7 @@ impl WhatsAppService {
 
                                 match gemini.describe_image(&bytes, &mime).await {
                                     Ok(description) => {
+                                        stats.inc_image();
                                         info!(
                                             "Audiodescrição gerada com sucesso ({} caracteres)",
                                             description.len()
@@ -174,6 +182,7 @@ impl WhatsAppService {
 
                                 match gemini.describe_sticker(&bytes, &mime).await {
                                     Ok(description) => {
+                                        stats.inc_sticker();
                                         info!(
                                             "Descrição de figurinha gerada com sucesso ({} caracteres)",
                                             description.len()
