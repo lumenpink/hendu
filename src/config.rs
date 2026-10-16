@@ -16,8 +16,7 @@ impl Config {
     where
         F: Fn(&str) -> Option<String>,
     {
-        let db_path_str =
-            lookup("HENDU_DB_PATH").unwrap_or_else(|| "data/whatsapp.db".to_string());
+        let db_path_str = lookup("HENDU_DB_PATH").unwrap_or_else(|| "data/whatsapp.db".to_string());
         if db_path_str.trim().is_empty() {
             return Err("HENDU_DB_PATH cannot be empty".to_string());
         }

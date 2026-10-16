@@ -13,10 +13,11 @@ impl WhatsAppService {
     }
 
     pub fn ensure_parent_dir(path: &Path) -> Result<(), std::io::Error> {
-        if let Some(parent) = path.parent() {
-            if !parent.as_os_str().is_empty() && !parent.exists() {
-                std::fs::create_dir_all(parent)?;
-            }
+        if let Some(parent) = path.parent()
+            && !parent.as_os_str().is_empty()
+            && !parent.exists()
+        {
+            std::fs::create_dir_all(parent)?;
         }
         Ok(())
     }
