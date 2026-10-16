@@ -42,6 +42,8 @@ impl WhatsAppService {
             self.config.gemini_endpoint.clone(),
         ));
         let audio_transcription_enabled = self.config.audio_transcription_enabled;
+        let image_description_enabled = self.config.image_description_enabled;
+        let sticker_description_enabled = self.config.sticker_description_enabled;
 
         info!("Construindo cliente WhatsApp Hendu...");
         let bot = Bot::builder()
@@ -104,6 +106,94 @@ impl WhatsAppService {
                             }
                             Err(e) => {
                                 error!("Falha ao baixar áudio do WhatsApp CDN: {:?}", e);
+                            }
+                        }
+                    }
+
+                    // 3. Tratamento de imagens (fotos, capturas de tela)
+                    if image_description_enabled
+                        && let Some(image) = ctx.message.image_message.as_option()
+                    {
+                        let mime = image
+                            .mimetype
+                            .as_deref()
+                            .unwrap_or("image/jpeg")
+                            .to_string();
+
+                        info!("Mensagem com imagem detectada. Baixando mídia do WhatsApp...");
+                        match ctx.client.download(image).await {
+                            Ok(bytes) => {
+                                info!(
+                                    "Imagem baixada com sucesso ({} bytes). Gerando audiodescrição...",
+                                    bytes.len()
+                                );
+
+                                match gemini.describe_image(&bytes, &mime).await {
+                                    Ok(description) => {
+                                        info!(
+                                            "Audiodescrição gerada com sucesso ({} caracteres)",
+                                            description.len()
+                                        );
+                                        let reply_body =
+                                            format!("🖼️ Audiodescrição:\n\n{description}");
+                                        if let Err(e) = ctx.reply_quoting(reply_body).await {
+                                            error!(
+                                                "Falha ao enviar resposta de audiodescrição: {:?}",
+                                                e
+                                            );
+                                        }
+                                    }
+                                    Err(e) => {
+                                        warn!("Falha ao descrever imagem via Gemini: {:?}", e);
+                                    }
+                                }
+                            }
+                            Err(e) => {
+                                error!("Falha ao baixar imagem do WhatsApp CDN: {:?}", e);
+                            }
+                        }
+                    }
+
+                    // 4. Tratamento de figurinhas (stickers e memes)
+                    if sticker_description_enabled
+                        && let Some(sticker) = ctx.message.sticker_message.as_option()
+                    {
+                        let mime = sticker
+                            .mimetype
+                            .as_deref()
+                            .unwrap_or("image/webp")
+                            .to_string();
+
+                        info!("Figurinha/sticker detectada. Baixando mídia do WhatsApp...");
+                        match ctx.client.download(sticker).await {
+                            Ok(bytes) => {
+                                info!(
+                                    "Figurinha baixada com sucesso ({} bytes). Descrevendo meme/figurinha...",
+                                    bytes.len()
+                                );
+
+                                match gemini.describe_sticker(&bytes, &mime).await {
+                                    Ok(description) => {
+                                        info!(
+                                            "Descrição de figurinha gerada com sucesso ({} caracteres)",
+                                            description.len()
+                                        );
+                                        let reply_body =
+                                            format!("🎭 Figurinha:\n\n{description}");
+                                        if let Err(e) = ctx.reply_quoting(reply_body).await {
+                                            error!(
+                                                "Falha ao enviar resposta de descrição de figurinha: {:?}",
+                                                e
+                                            );
+                                        }
+                                    }
+                                    Err(e) => {
+                                        warn!("Falha ao descrever figurinha via Gemini: {:?}", e);
+                                    }
+                                }
+                            }
+                            Err(e) => {
+                                error!("Falha ao baixar figurinha do WhatsApp CDN: {:?}", e);
                             }
                         }
                     }

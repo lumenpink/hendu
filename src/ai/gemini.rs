@@ -133,14 +133,61 @@ impl GeminiClient {
         }
     }
 
-    pub async fn transcribe_audio(
-        &self,
-        audio_bytes: &[u8],
+    pub fn build_image_description_request(
+        image_bytes: &[u8],
         mime_type: &str,
+    ) -> GenerateContentRequest {
+        let b64_data = BASE64_STANDARD.encode(image_bytes);
+        let prompt = "Descreva esta imagem de forma objetiva e acessível para pessoas com deficiência visual usuárias de leitores de tela. Destaque o sujeito principal, cenário, ações e transcreva qualquer texto visível na imagem. Retorne apenas a audiodescrição, sem introduções ou saudações.";
+
+        GenerateContentRequest {
+            contents: vec![Content {
+                role: Some("user".to_string()),
+                parts: vec![
+                    Part::Text {
+                        text: prompt.to_string(),
+                    },
+                    Part::InlineData {
+                        inline_data: InlineData {
+                            mime_type: mime_type.to_string(),
+                            data: b64_data,
+                        },
+                    },
+                ],
+            }],
+        }
+    }
+
+    pub fn build_sticker_description_request(
+        sticker_bytes: &[u8],
+        mime_type: &str,
+    ) -> GenerateContentRequest {
+        let b64_data = BASE64_STANDARD.encode(sticker_bytes);
+        let prompt = "Descreva esta figurinha/meme de WhatsApp de forma concisa e acessível para usuários de leitores de tela. Descreva o elemento visual, transcreva qualquer texto presente nela e explique brevemente a emoção, meme ou humor transmitido. Retorne apenas a descrição direta.";
+
+        GenerateContentRequest {
+            contents: vec![Content {
+                role: Some("user".to_string()),
+                parts: vec![
+                    Part::Text {
+                        text: prompt.to_string(),
+                    },
+                    Part::InlineData {
+                        inline_data: InlineData {
+                            mime_type: mime_type.to_string(),
+                            data: b64_data,
+                        },
+                    },
+                ],
+            }],
+        }
+    }
+
+    async fn send_generate_content(
+        &self,
+        request_payload: &GenerateContentRequest,
     ) -> Result<String, GeminiError> {
         let api_key = self.api_key.as_deref().ok_or(GeminiError::MissingApiKey)?;
-        let request_payload = Self::build_transcription_request(audio_bytes, mime_type);
-
         let url = format!(
             "{}/v1beta/models/{}:generateContent?key={}",
             self.endpoint.trim_end_matches('/'),
@@ -148,7 +195,7 @@ impl GeminiClient {
             api_key
         );
 
-        let response = self.client.post(&url).json(&request_payload).send().await?;
+        let response = self.client.post(&url).json(request_payload).send().await?;
 
         let status = response.status();
         if !status.is_success() {
@@ -161,5 +208,32 @@ impl GeminiClient {
 
         let resp_data: GenerateContentResponse = response.json().await?;
         resp_data.extract_text().ok_or(GeminiError::EmptyResponse)
+    }
+
+    pub async fn transcribe_audio(
+        &self,
+        audio_bytes: &[u8],
+        mime_type: &str,
+    ) -> Result<String, GeminiError> {
+        let req = Self::build_transcription_request(audio_bytes, mime_type);
+        self.send_generate_content(&req).await
+    }
+
+    pub async fn describe_image(
+        &self,
+        image_bytes: &[u8],
+        mime_type: &str,
+    ) -> Result<String, GeminiError> {
+        let req = Self::build_image_description_request(image_bytes, mime_type);
+        self.send_generate_content(&req).await
+    }
+
+    pub async fn describe_sticker(
+        &self,
+        sticker_bytes: &[u8],
+        mime_type: &str,
+    ) -> Result<String, GeminiError> {
+        let req = Self::build_sticker_description_request(sticker_bytes, mime_type);
+        self.send_generate_content(&req).await
     }
 }
