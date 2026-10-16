@@ -1,5 +1,7 @@
 use hendu::config::Config;
+use hendu::wa::WhatsAppService;
 use std::collections::HashMap;
+use std::path::Path;
 
 #[test]
 fn test_default_config_lookup() {
@@ -39,4 +41,25 @@ fn test_from_env_smoke() {
     // Validação de sanidade do método from_env real
     let res = Config::from_env();
     assert!(res.is_ok(), "from_env default deve carregar sem erro");
+}
+
+#[test]
+fn test_ensure_parent_dir_creates_nested() {
+    let target = Path::new("/tmp/hendu_test_dir_nested/sub/whatsapp.db");
+    let res = WhatsAppService::ensure_parent_dir(target);
+    assert!(res.is_ok(), "Deve criar diretórios aninhados sem erro");
+    assert!(target.parent().unwrap().exists());
+
+    // Limpeza
+    let _ = std::fs::remove_dir_all("/tmp/hendu_test_dir_nested");
+}
+
+#[test]
+fn test_ensure_parent_dir_root_or_current() {
+    let target = Path::new("whatsapp.db");
+    let res = WhatsAppService::ensure_parent_dir(target);
+    assert!(
+        res.is_ok(),
+        "Caminho sem diretório pai deve ser ignorado com sucesso"
+    );
 }
