@@ -65,45 +65,45 @@ impl WhatsAppService {
                     }
 
                     // 2. Tratamento de mensagens de áudio (PTT ou arquivo de áudio)
-                    if audio_transcription_enabled && ctx.message.audio_message.is_set() {
-                        if let Some(audio) = ctx.message.audio_message.as_option() {
-                            let mime = audio
-                                .mimetype
-                                .as_deref()
-                                .unwrap_or("audio/ogg; codecs=opus")
-                                .to_string();
+                    if audio_transcription_enabled
+                        && let Some(audio) = ctx.message.audio_message.as_option()
+                    {
+                        let mime = audio
+                            .mimetype
+                            .as_deref()
+                            .unwrap_or("audio/ogg; codecs=opus")
+                            .to_string();
 
-                            info!("Mensagem de áudio detectada. Baixando mídia do WhatsApp...");
-                            match ctx.client.download(audio).await {
-                                Ok(bytes) => {
-                                    info!(
-                                        "Áudio baixado com sucesso ({} bytes). Transcrevendo com Gemini...",
-                                        bytes.len()
-                                    );
+                        info!("Mensagem de áudio detectada. Baixando mídia do WhatsApp...");
+                        match ctx.client.download(audio).await {
+                            Ok(bytes) => {
+                                info!(
+                                    "Áudio baixado com sucesso ({} bytes). Transcrevendo com Gemini...",
+                                    bytes.len()
+                                );
 
-                                    match gemini.transcribe_audio(&bytes, &mime).await {
-                                        Ok(transcription) => {
-                                            info!(
-                                                "Transcrição gerada com sucesso ({} caracteres)",
-                                                transcription.len()
+                                match gemini.transcribe_audio(&bytes, &mime).await {
+                                    Ok(transcription) => {
+                                        info!(
+                                            "Transcrição gerada com sucesso ({} caracteres)",
+                                            transcription.len()
+                                        );
+                                        let reply_body =
+                                            format!("🎙️ Transcrição:\n\n{transcription}");
+                                        if let Err(e) = ctx.reply_quoting(reply_body).await {
+                                            error!(
+                                                "Falha ao enviar resposta de transcrição: {:?}",
+                                                e
                                             );
-                                            let reply_body =
-                                                format!("🎙️ Transcrição:\n\n{transcription}");
-                                            if let Err(e) = ctx.reply_quoting(reply_body).await {
-                                                error!(
-                                                    "Falha ao enviar resposta de transcrição: {:?}",
-                                                    e
-                                                );
-                                            }
-                                        }
-                                        Err(e) => {
-                                            warn!("Falha ao transcrever áudio via Gemini: {:?}", e);
                                         }
                                     }
+                                    Err(e) => {
+                                        warn!("Falha ao transcrever áudio via Gemini: {:?}", e);
+                                    }
                                 }
-                                Err(e) => {
-                                    error!("Falha ao baixar áudio do WhatsApp CDN: {:?}", e);
-                                }
+                            }
+                            Err(e) => {
+                                error!("Falha ao baixar áudio do WhatsApp CDN: {:?}", e);
                             }
                         }
                     }

@@ -1,5 +1,5 @@
-use base64::engine::general_purpose::STANDARD as BASE64_STANDARD;
 use base64::Engine;
+use base64::engine::general_purpose::STANDARD as BASE64_STANDARD;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
@@ -148,12 +148,7 @@ impl GeminiClient {
             api_key
         );
 
-        let response = self
-            .client
-            .post(&url)
-            .json(&request_payload)
-            .send()
-            .await?;
+        let response = self.client.post(&url).json(&request_payload).send().await?;
 
         let status = response.status();
         if !status.is_success() {
@@ -165,8 +160,6 @@ impl GeminiClient {
         }
 
         let resp_data: GenerateContentResponse = response.json().await?;
-        resp_data
-            .extract_text()
-            .ok_or(GeminiError::EmptyResponse)
+        resp_data.extract_text().ok_or(GeminiError::EmptyResponse)
     }
 }
