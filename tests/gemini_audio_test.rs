@@ -1,12 +1,10 @@
-use hendu::ai::gemini::{
-    GeminiClient, GenerateContentRequest, GenerateContentResponse,
-};
+use hendu::ai::gemini::{GeminiClient, GenerateContentResponse};
 use hendu::config::Config;
 use std::collections::HashMap;
 
 #[test]
 fn test_config_gemini_defaults() {
-    let env = HashMap::new();
+    let env: HashMap<String, String> = HashMap::new();
     let config = Config::from_lookup(|k| env.get(k).cloned()).unwrap();
 
     assert_eq!(config.gemini_model, "gemini-3.5-flash-lite");
