@@ -28,7 +28,7 @@ Todo projeto em conformidade com o GOST **DEVE** declarar sua licença de forma 
 1. **Aplicações Completas / Monorepos Híbridos (ex: Mayak, Navalha):** Adotam `GPL-3.0` (ou `AGPL-3.0` para serviços web) na raiz (`LICENSE`).
 2. **Microapps & Comrades (ex: comrades/cli):** Adotam `Apache-2.0` na raiz (`LICENSE`) diretamente, sem necessidade de arquivos satélites supérfluos.
 3. **Bibliotecas, Protocolos e SDKs:** Adotam `Apache-2.0` na raiz (`LICENSE`) para máxima interoperabilidade.
-4. **Especificações e Normas (ex: GOST):** Adotam `CC-BY-SA-4.0` para os textos normativos na raiz (`LICENSE`), com esquemas e templates em `GPL-3.0-or-later` e marcas protegidas via satélite.
+4. **Especificações e Normas (ex: GOST):** Adotam `CC-BY-SA-4.0` para os textos normativos na raiz (`LICENSE`), com esquemas e templates em `CC0-1.0` e marcas protegidas via satélite.
 
 ### 2.3 Arquivos Satélites Padronizados
 Quando houver artefatos que exijam tratamentos jurídicos específicos, os seguintes arquivos canônicos **DEVEM** ser utilizados:

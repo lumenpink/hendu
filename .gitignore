@@ -14,7 +14,12 @@
 # Metadados de agentes locais
 .antigravity/
 
+# Arquivos de ambiente e segredos
+.env
+.env.local
+
+# Banco de dados e armazenamento local
+/data/
 
 # Added by cargo
-
 /target

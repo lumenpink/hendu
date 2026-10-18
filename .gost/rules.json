@@ -11,7 +11,7 @@
       "check": "file_exists",
       "target": "LICENSE",
       "valid_values": [
-        "GPL-3.0-or-later",
+        "CC0-1.0",
         "GPL-3.0",
         "GPL-3.0-or-later",
         "AGPL-3.0",
