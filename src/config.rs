@@ -19,6 +19,8 @@ pub struct Config {
     pub image_description_enabled: bool,
     pub sticker_description_enabled: bool,
     pub group_mode: GroupMode,
+    pub owner_phone: String,
+    pub acl_path: PathBuf,
 }
 
 impl Config {
@@ -80,6 +82,15 @@ impl Config {
             _ => GroupMode::Automatic,
         };
 
+        let owner_phone = lookup("HENDU_OWNER_PHONE")
+            .and_then(Self::clean_non_empty)
+            .unwrap_or_else(|| "5548991381979".to_string());
+
+        let acl_path_str = lookup("HENDU_ACL_PATH")
+            .and_then(Self::clean_non_empty)
+            .unwrap_or_else(|| "data/acl.json".to_string());
+        let acl_path = PathBuf::from(acl_path_str);
+
         Ok(Self {
             db_path,
             log_level,
@@ -90,6 +101,8 @@ impl Config {
             image_description_enabled,
             sticker_description_enabled,
             group_mode,
+            owner_phone,
+            acl_path,
         })
     }
 }

@@ -1,3 +1,4 @@
+pub mod acl;
 pub mod ai;
 pub mod commands;
 pub mod config;

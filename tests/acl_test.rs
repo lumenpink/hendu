@@ -1,6 +1,6 @@
 use hendu::acl::{
-    AclManager, AclStatus, GroupOperationMode, OwnerCheck, normalize_brazilian_phone,
-    parse_owner_command, OwnerCommand,
+    AclManager, AclStatus, GroupOperationMode, OwnerCheck, OwnerCommand, normalize_brazilian_phone,
+    parse_owner_command,
 };
 
 #[test]
@@ -37,11 +37,15 @@ fn test_parse_owner_command_private_without_bang() {
     );
     assert_eq!(
         parse_owner_command("permitir ondemand"),
-        Some(OwnerCommand::AllowCurrent(Some(GroupOperationMode::OnDemand)))
+        Some(OwnerCommand::AllowCurrent(Some(
+            GroupOperationMode::OnDemand
+        )))
     );
     assert_eq!(
         parse_owner_command("permitir automatic"),
-        Some(OwnerCommand::AllowCurrent(Some(GroupOperationMode::Automatic)))
+        Some(OwnerCommand::AllowCurrent(Some(
+            GroupOperationMode::Automatic
+        )))
     );
     assert_eq!(
         parse_owner_command("permitir 5548999998888"),
@@ -99,17 +103,26 @@ fn test_acl_state_machine_flow() {
     // 2. Registra primeiro contato -> Aguardando apresentação
     let action = acl.process_incoming(contact_jid, "Olá bot");
     assert_eq!(action, hendu::acl::AclAction::SendWelcome);
-    assert_eq!(acl.get_contact_status(contact_jid), AclStatus::AwaitingIntro);
+    assert_eq!(
+        acl.get_contact_status(contact_jid),
+        AclStatus::AwaitingIntro
+    );
 
     // 3. Envia apresentação -> Hendu encaminha à dona e transiciona para Pendente
-    let action2 = acl.process_incoming(contact_jid, "Sou a Maria e gostaria de testar o bot de acessibilidade.");
+    let action2 = acl.process_incoming(
+        contact_jid,
+        "Sou a Maria e gostaria de testar o bot de acessibilidade.",
+    );
     match action2 {
         hendu::acl::AclAction::ForwardIntroToOwner { intro, .. } => {
             assert!(intro.contains("Maria"));
         }
         other => panic!("Esperado ForwardIntroToOwner, obtido {:?}", other),
     }
-    assert_eq!(acl.get_contact_status(contact_jid), AclStatus::PendingApproval);
+    assert_eq!(
+        acl.get_contact_status(contact_jid),
+        AclStatus::PendingApproval
+    );
 
     // 4. Nova mensagem enquanto pendente -> Silêncio (não responde e não flooda a dona)
     let action3 = acl.process_incoming(contact_jid, "E aí, já aprovou?");
@@ -125,6 +138,21 @@ fn test_acl_state_machine_flow() {
 }
 
 #[test]
+fn test_extract_target_from_quoted() {
+    let group_msg = "🔔 *Novo pedido de acesso para GRUPO!*\n\n👥 *Grupo:* 12036304@g.us\n👤 *Solicitante:* 55489999@s.whatsapp.net";
+    assert_eq!(
+        hendu::acl::extract_target_from_quoted(group_msg),
+        Some("12036304@g.us".to_string())
+    );
+
+    let contact_msg = "🔔 *Novo pedido de acesso individual!*\n\n👤 *Contato:* 554898765432@s.whatsapp.net\n📝 *Apresentação:* Olá";
+    assert_eq!(
+        hendu::acl::extract_target_from_quoted(contact_msg),
+        Some("554898765432@s.whatsapp.net".to_string())
+    );
+}
+
+#[test]
 fn test_group_acl_mode_granular() {
     let mut acl = AclManager::new_in_memory();
     let group_jid = "123456789-group@g.us";
@@ -135,9 +163,15 @@ fn test_group_acl_mode_granular() {
     // Dona autoriza grupo em ondemand
     acl.set_group_status(group_jid, AclStatus::Approved, GroupOperationMode::OnDemand);
     assert_eq!(acl.get_group_status(group_jid), AclStatus::Approved);
-    assert_eq!(acl.get_group_mode(group_jid), Some(GroupOperationMode::OnDemand));
+    assert_eq!(
+        acl.get_group_mode(group_jid),
+        Some(GroupOperationMode::OnDemand)
+    );
 
     // Dona altera grupo para automatic
     acl.set_group_mode(group_jid, GroupOperationMode::Automatic);
-    assert_eq!(acl.get_group_mode(group_jid), Some(GroupOperationMode::Automatic));
+    assert_eq!(
+        acl.get_group_mode(group_jid),
+        Some(GroupOperationMode::Automatic)
+    );
 }

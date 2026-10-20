@@ -30,7 +30,7 @@ pub fn handle_command(input: &str, stats: &BotStats) -> Option<String> {
 
     match lower.as_str() {
         "!ping" | "ping" => Some("pong".to_string()),
-        "!ajuda" | "!help" => Some(
+        "!ajuda" | "!help" | "ajuda" | "help" => Some(
             "🌟 *Hendu — Acessibilidade Comunitária*\n\n\
             Eu sou um bot auto-hospedado focado em acessibilidade para pessoas com deficiência:\n\n\
             🎙️ *Áudios*: Envie ou encaminhe um áudio e eu transcreverei o texto para pessoas surdas.\n\
@@ -45,14 +45,14 @@ pub fn handle_command(input: &str, stats: &BotStats) -> Option<String> {
             • `!ping`: Testa se o bot está online."
                 .to_string(),
         ),
-        "!sobre" | "!about" => Some(
+        "!sobre" | "!about" | "sobre" | "about" => Some(
             "🌿 *Sobre o Hendu*\n\n\
             *Hendu* é uma palavra Guarani que significa *escutar, ouvir, prestar atenção, compreender* (pronúncia oxítona: *rren-DÚ*).\n\n\
             Desenvolvido sob o perfil *Kollontai* em Rust puro, seguro, leve e auto-hospedado, garantindo privacidade, autonomia técnica e acessibilidade para grupos de pessoas com deficiência (PCD).\n\n\
             Código aberto sob licença Apache-2.0."
                 .to_string(),
         ),
-        "!status" => Some(
+        "!status" | "status" => Some(
             format!(
                 "📊 *Status do Hendu*\n\n\
                 ⏱️ Tempo ativo: {}\n\
