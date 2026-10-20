@@ -2,7 +2,7 @@ use std::fs;
 use std::path::Path;
 
 #[test]
-fn test_dockerfile_kollontai_spec() {
+fn test_dockerfile_spec() {
     let dockerfile_path = Path::new("Dockerfile");
     assert!(
         dockerfile_path.exists(),
@@ -17,7 +17,7 @@ fn test_dockerfile_kollontai_spec() {
     );
     assert!(
         content.contains("FROM scratch"),
-        "Dockerfile deve utilizar imagem final scratch para perfil Kollontai"
+        "Dockerfile deve utilizar imagem final scratch para conformidade GOST"
     );
     assert!(
         content.contains("ca-certificates.crt"),
@@ -57,7 +57,7 @@ fn test_compose_yaml_spec() {
     );
     assert!(
         content.contains("memory: 64M"),
-        "compose.yaml deve limitar o consumo de memoria em 64M para perfil Kollontai"
+        "compose.yaml deve limitar o consumo de memoria em 64M para conformidade GOST"
     );
 }
 

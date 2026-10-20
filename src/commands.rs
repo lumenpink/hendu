@@ -48,7 +48,7 @@ pub fn handle_command(input: &str, stats: &BotStats) -> Option<String> {
         "!sobre" | "!about" | "sobre" | "about" => Some(
             "🌿 *Sobre o Hendu*\n\n\
             *Hendu* é uma palavra Guarani que significa *escutar, ouvir, prestar atenção, compreender* (pronúncia oxítona: *rren-DÚ*).\n\n\
-            Desenvolvido sob o perfil *Kollontai* em Rust puro, seguro, leve e auto-hospedado, garantindo privacidade, autonomia técnica e acessibilidade para grupos de pessoas com deficiência (PCD).\n\n\
+            Desenvolvido sob a norma *GOST* em Rust puro, seguro, leve e auto-hospedado, garantindo privacidade, autonomia técnica e acessibilidade para grupos de pessoas com deficiência (PCD).\n\n\
             Código aberto sob licença Apache-2.0."
                 .to_string(),
         ),

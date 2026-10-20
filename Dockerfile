@@ -1,4 +1,4 @@
-# Multi-stage build para perfil Kollontai (Rust + musl estatico + scratch)
+# Multi-stage build estatico em conformidade com a norma GOST (Rust + musl + scratch)
 FROM rust:alpine AS builder
 
 RUN apk add --no-cache musl-dev ca-certificates
@@ -18,7 +18,7 @@ COPY src ./src
 RUN cargo build --release && \
     strip target/release/hendu
 
-# Container final sob perfil Kollontai
+# Container final sob a norma GOST (scratch)
 FROM scratch
 
 # Certificados raiz para comunicacao HTTPS TLS com Gemini API

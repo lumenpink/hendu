@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a1d13"/>
+      <stop offset="50%" stop-color="#06150e"/>
+      <stop offset="100%" stop-color="#020905"/>
+    </linearGradient>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="50%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6ee7b7"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Fundo Circular -->
+  <rect width="512" height="512" rx="128" fill="url(#bgGrad)"/>
+  <rect width="504" height="504" x="4" y="4" rx="124" fill="none" stroke="#10b981" stroke-width="2" stroke-opacity="0.3"/>
+
+  <!-- Ondas Concêntricas de Escuta Atenta (Hendu: escutar / compreender) -->
+  <!-- Onda Externa -->
+  <path d="M 330,130 A 170,170 0 0,1 330,370" fill="none" stroke="url(#accentGrad)" stroke-width="14" stroke-linecap="round" opacity="0.4"/>
+  <!-- Onda Média -->
+  <path d="M 290,165 A 120,120 0 0,1 290,335" fill="none" stroke="url(#accentGrad)" stroke-width="16" stroke-linecap="round" opacity="0.75"/>
+  <!-- Onda Interna -->
+  <path d="M 252,205 A 70,70 0 0,1 252,295" fill="none" stroke="#a7f3d0" stroke-width="18" stroke-linecap="round"/>
+
+  <!-- Símbolo Guarani: Broto Vegetal de Acessibilidade / Ouvido Estilizado -->
+  <g transform="translate(40, 0)">
+    <!-- Folha / Pavilhão de Escuta -->
+    <path d="M 170,350 C 130,310 110,250 135,190 C 155,140 205,135 225,185 C 240,225 210,270 175,285 C 160,290 155,305 168,318 C 185,335 215,330 230,315" 
+          fill="none" stroke="url(#primaryGrad)" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+    
+    <!-- Nervura Orgânica Central da Folha -->
+    <path d="M 148,220 C 175,200 200,215 190,245" 
+          fill="none" stroke="#6ee7b7" stroke-width="10" stroke-linecap="round"/>
+
+    <!-- Ponto de Atenção / Semente Vital -->
+    <circle cx="178" cy="235" r="14" fill="#38bdf8"/>
+  </g>
+
+  <!-- Tipografia "hendu" -->
+  <text x="256" y="445" 
+        text-anchor="middle" 
+        font-family="system-ui, -apple-system, sans-serif" 
+        font-size="44" 
+        font-weight="900" 
+        letter-spacing="6" 
+        fill="#f8fafc">
+    HENDU
+  </text>
+  <text x="256" y="475" 
+        text-anchor="middle" 
+        font-family="system-ui, -apple-system, sans-serif" 
+        font-size="14" 
+        font-weight="700" 
+        letter-spacing="3" 
+        fill="#10b981">
+    [rren-DÚ] • ACESSIBILIDADE
+  </text>
+</svg>

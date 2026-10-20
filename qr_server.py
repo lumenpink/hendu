@@ -55,7 +55,7 @@ HTML = """<!DOCTYPE html>
 </head>
 <body>
     <div class="card">
-        <span class="badge">Perfil Kollontai</span>
+        <span class="badge">Norma GOST</span>
         <h1>🌿 Hendu Bot WhatsApp</h1>
         <p>Aponte a câmera do WhatsApp para conectar:</p>
         <div class="qr-wrapper">

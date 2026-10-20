@@ -1,18 +1,288 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>hendu — Documentação</title>
-<style>
-body { font-family: monospace, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; line-height: 1.6; }
-h1 { border-bottom: 2px solid #333; padding-bottom: 8px; }
-.badge { display: inline-block; padding: 2px 8px; background: #eee; border: 1px solid #ccc; font-size: 0.9em; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hendu — Bot de WhatsApp para Acessibilidade Comunitária</title>
+  
+  <!-- Metatags e Open Graph de Alta Fidelidade (GOST) -->
+  <meta name="description" content="Hendu [rren-DÚ]: Bot de WhatsApp em Rust auto-hospedado para acessibilidade comunitária. Transcrição de áudios e audiodescrição de fotos e figurinhas.">
+  <meta property="og:title" content="Hendu — Acessibilidade Comunitária no WhatsApp">
+  <meta property="og:description" content="Transcrição de áudio para pessoas surdas e audiodescrição de imagens/figurinhas para leitores de tela. Desenvolvido em conformidade com a norma GOST.">
+  <meta property="og:image" content="assets/hendu-banner.png">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#07150e">
+
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>hendu</h1>
-<p>Bot de WhatsApp em Rust para acessibilidade comunitaria: transcricao de audios e descricao de imagens e figurinhas</p>
-<p><span class="badge">GOST v1.1.0</span> <span class="badge">Apache-2.0</span></p>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-badge" aria-label="Norma e Conformidade">
+        ★ CONFORMIDADE NORMA GOST 1.5.0 • WCAG AAA
+      </div>
+      <img src="assets/logo.svg" alt="Logotipo do Hendu: ondas de som e folha Guarani" class="hero-logo-img">
+      <h1 class="hero-title">HENDU</h1>
+      <div class="hero-pronunciation">
+        [rren-DÚ] • Origem Guarani: <em>escutar, ouvir, prestar atenção e compreender</em>
+      </div>
+      <p class="hero-tagline">
+        Assistente comunitário auto-hospedado em <strong>Rust</strong> para o WhatsApp, focado em quebrar barreiras comunicacionais: transcreve mensagens de voz para pessoas surdas e audiodescreve imagens e memes para pessoas cegas ou de baixa visão.
+      </p>
+      <div class="hero-actions">
+        <a href="#como-funciona" class="btn btn-primary">Ver Demonstrações 💬</a>
+        <a href="https://codeberg.org/lumenpink/hendu" class="btn btn-outline" target="_blank" rel="noopener">Código no Codeberg ⚡</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Demonstrações Práticas / Mockups de Chat -->
+    <section id="como-funciona">
+      <div class="container">
+        <h2 class="section-title">Como Funciona na Prática</h2>
+        <p class="section-subtitle">
+          Interação natural diretamente no WhatsApp individual ou em grupos. Sem aplicativos adicionais para instalar.
+        </p>
+
+        <div class="mockup-grid">
+
+          <!-- Mockup 1: Transcrição de Áudio -->
+          <article class="mockup-card" aria-label="Exemplo de transcrição de áudio">
+            <div class="mockup-header">
+              <div class="mockup-avatar">H</div>
+              <div class="mockup-header-info">
+                <h3>🌿 Hendu Bot</h3>
+                <span>online • acessibilidade</span>
+              </div>
+            </div>
+            <div class="mockup-body">
+              <!-- Mensagem de Áudio enviada pelo usuário -->
+              <div class="chat-bubble out">
+                <div class="audio-bubble">
+                  <div class="play-btn" aria-hidden="true">▶</div>
+                  <div class="audio-waves" aria-hidden="true">
+                    <span class="audio-bar" style="height: 12px;"></span>
+                    <span class="audio-bar" style="height: 18px;"></span>
+                    <span class="audio-bar" style="height: 24px;"></span>
+                    <span class="audio-bar" style="height: 14px;"></span>
+                    <span class="audio-bar" style="height: 20px;"></span>
+                    <span class="audio-bar" style="height: 10px;"></span>
+                    <span class="audio-bar" style="height: 16px;"></span>
+                  </div>
+                  <span style="font-size: 0.75rem; color: #aebac1;">0:14</span>
+                </div>
+              </div>
+
+              <!-- Resposta Transcrita do Hendu -->
+              <div class="chat-bubble in">
+                <div class="quoted-block">🎙️ Mensagem de voz (14s)</div>
+                <strong>🎙️ Transcrição:</strong><br><br>
+                "Oi pessoal! Passando para avisar que a reunião de alinhamento do projeto foi remarcada para amanhã às 14h na sala comunitária. Até lá!"
+              </div>
+            </div>
+            <div class="mockup-footer-desc">
+              <strong>🎙️ Para pessoas surdas:</strong> Converte notas de voz e áudios encaminhados em texto legível instantâneo.
+            </div>
+          </article>
+
+          <!-- Mockup 2: Audiodescrição de Imagem & Figurinha -->
+          <article class="mockup-card" aria-label="Exemplo de audiodescrição de foto">
+            <div class="mockup-header">
+              <div class="mockup-avatar">H</div>
+              <div class="mockup-header-info">
+                <h3>🌿 Hendu Bot</h3>
+                <span>online • acessibilidade</span>
+              </div>
+            </div>
+            <div class="mockup-body">
+              <!-- Usuário envia foto ou figurinha -->
+              <div class="chat-bubble out">
+                <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; text-align: center; font-size: 1.8rem;">
+                  🖼️ <em>[Foto do pôster comunitário]</em>
+                </div>
+              </div>
+
+              <!-- Resposta do Hendu -->
+              <div class="chat-bubble in">
+                <div class="quoted-block">🖼️ Imagem anexada</div>
+                <strong>🖼️ Audiodescrição:</strong><br><br>
+                Cartaz vertical de fundo verde com letras brancas em destaque. No topo lê-se: "Oficina Aberta de Hortas Comunitárias". No centro, ilustração de duas mãos segurando uma muda de planta verde brotando da terra. Abaixo: "Sábado, 09h — Entrada Livre".
+              </div>
+            </div>
+            <div class="mockup-footer-desc">
+              <strong>🖼️ Para pessoas cegas:</strong> Descreve cenários, textos, cores e contexto de fotos, imagens e memes.
+            </div>
+          </article>
+
+          <!-- Mockup 3: Modo Dona & Controle Soberano -->
+          <article class="mockup-card" aria-label="Exemplo do modo dona e autorização">
+            <div class="mockup-header">
+              <div class="mockup-avatar">H</div>
+              <div class="mockup-header-info">
+                <h3>🌿 Hendu Bot</h3>
+                <span>privado com a administradora</span>
+              </div>
+            </div>
+            <div class="mockup-body">
+              <!-- Notificação recebida pela Dona -->
+              <div class="chat-bubble in">
+                🔔 <strong>Novo pedido de acesso para GRUPO!</strong><br><br>
+                👥 <em>Grupo:</em> Coletivo Acessível SC<br>
+                👤 <em>Solicitante:</em> +55 48 9XXXX-XXXX<br>
+                📝 <em>Apresentação:</em> "Queremos usar o Hendu para transcrever os áudios do nosso grupo de acolhimento."
+              </div>
+
+              <!-- Dona responde com um comando simples sem prefixo ! -->
+              <div class="chat-bubble out">
+                permitir ondemand
+              </div>
+
+              <!-- Confirmação do Hendu -->
+              <div class="chat-bubble in">
+                ✅ Grupo <code>Coletivo Acessível SC</code> autorizado com sucesso no modo <strong>Sob Demanda</strong>!
+              </div>
+            </div>
+            <div class="mockup-footer-desc">
+              <strong>🛡️ Modo Dona:</strong> Comandos simples no PV sem necessidade de <code>!</code>. Privacidade e controle absoluto.
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Pilares Técnicos e Princípios -->
+    <section>
+      <div class="container">
+        <h2 class="section-title">Pilares da Arquitetura</h2>
+        <p class="section-subtitle">
+          Construído sob rigorosos critérios de engenharia de software da norma GOST: leveza, soberania e resiliência.
+        </p>
+
+        <div class="cards-grid">
+          <div class="feature-card">
+            <span class="feature-icon" aria-hidden="true">🦀</span>
+            <h3 class="feature-title">Rust Puro & Scratch</h3>
+            <p class="feature-desc">
+              Compilado estaticamente com <code>musl</code> em container <code>scratch</code> ultra-mínimo. Consumo rígido limitado a menos de 64MB de memória RAM.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <span class="feature-icon" aria-hidden="true">🔒</span>
+            <h3 class="feature-title">Privacidade & SQLite</h3>
+            <p class="feature-desc">
+              Sessões criptografadas armazenadas em banco SQLite local. Listas de controle de acesso (ACL) mantidas sob custódia exclusiva de quem hospeda.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <span class="feature-icon" aria-hidden="true">🌐</span>
+            <h3 class="feature-title">Inteligência Multimodal</h3>
+            <p class="feature-desc">
+              Integração com modelos multimodais de alta eficiência (Gemini 3.5 Flash Lite) para processar voz em tempo recorde com excelente precisão fonética em português.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <span class="feature-icon" aria-hidden="true">⚖️</span>
+            <h3 class="feature-title">Norma GOST</h3>
+            <p class="feature-desc">
+              Desenvolvido seguindo as 9 fases de DD-TDD, com governança de tickets, testes automatizados e conformidade estrita com padrões de software livre.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Catálogo de Comandos -->
+    <section id="comandos">
+      <div class="container">
+        <h2 class="section-title">Comandos Disponíveis</h2>
+        <p class="section-subtitle">
+          Consulte as instruções rápidas para interação em grupos, conversas privadas e painel da administradora.
+        </p>
+
+        <div class="table-wrapper">
+          <table class="cmd-table">
+            <thead>
+              <tr>
+                <th scope="col">Comando</th>
+                <th scope="col">Onde Usar</th>
+                <th scope="col">Ação Realizada</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>!ajuda</code> / <code>ajuda</code></td>
+                <td>Todos os chats</td>
+                <td>Exibe as orientações de uso e acessibilidade.</td>
+              </tr>
+              <tr>
+                <td><code>!status</code> / <code>status</code></td>
+                <td>Todos os chats</td>
+                <td>Mostra tempo de atividade e total de mídias acessibilizadas.</td>
+              </tr>
+              <tr>
+                <td><code>!sobre</code> / <code>sobre</code></td>
+                <td>Todos os chats</td>
+                <td>Origem do nome em Guarani, missão social e licença.</td>
+              </tr>
+              <tr>
+                <td><code>!transcrever</code></td>
+                <td>Respondendo a um áudio</td>
+                <td>Força a transcrição do áudio citado em texto.</td>
+              </tr>
+              <tr>
+                <td><code>!descrever</code> / <code>!ver</code></td>
+                <td>Respondendo a foto/sticker</td>
+                <td>Gera a audiodescrição minuciosa da imagem citada.</td>
+              </tr>
+              <tr>
+                <td><code>permitir [modo]</code></td>
+                <td>PV da Administradora</td>
+                <td>Autoriza o contato ou grupo (modos <code>ondemand</code> ou <code>automatic</code>).</td>
+              </tr>
+              <tr>
+                <td><code>bloquear</code> / <code>recusar</code></td>
+                <td>PV da Administradora</td>
+                <td>Revoga o acesso ou bloqueia o solicitante.</td>
+              </tr>
+              <tr>
+                <td><code>modo [ondemand|automatic]</code></td>
+                <td>Grupos / PV</td>
+                <td>Define se o bot atua espontaneamente ou sob demanda.</td>
+              </tr>
+              <tr>
+                <td><code>lista</code></td>
+                <td>PV da Administradora</td>
+                <td>Lista todos os contatos e grupos autorizados na ACL.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Rodapé -->
+  <footer>
+    <div class="container">
+      <p>
+        <strong>Hendu</strong> — Software Livre sob licença <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank" rel="noopener">GPL-3.0-or-later</a>.
+      </p>
+      <p>
+        Desenvolvido em conformidade com a <strong>Norma GOST 1.5.0</strong>.
+      </p>
+      <p>
+        Forja Oficial no <a href="https://codeberg.org/lumenpink/hendu" target="_blank" rel="noopener">Codeberg</a> • Catálogo na <a href="https://banca.2lp.in" target="_blank" rel="noopener">Banca de Projetos 2LP</a>.
+      </p>
+    </div>
+  </footer>
+
 </body>
 </html>
