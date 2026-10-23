@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: hendu:latest
+    image: git.2lp.in/lumen/hendu:latest
     container_name: hendu
     restart: unless-stopped
     env_file:
