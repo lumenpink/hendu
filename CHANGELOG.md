@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Configuração do compose para utilizar o registro soberano git.2lp.in (closes #13).
+
 ### Fixed
 - Configuração de `[profile.release]` com LTO e strip, e linking estático `+crt-static` para musl libc (closes #12).
 
