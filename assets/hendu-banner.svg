@@ -9,11 +9,15 @@
       <stop offset="0%" stop-color="#0f291c"/>
       <stop offset="100%" stop-color="#07170f"/>
     </linearGradient>
-    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#10b981"/>
-      <stop offset="50%" stop-color="#34d399"/>
-      <stop offset="100%" stop-color="#38bdf8"/>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="50%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
     </linearGradient>
+    <filter id="glow" x="-150%" y="-150%" width="400%" height="400%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
     <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
       <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#10b981" stroke-width="1" stroke-opacity="0.05"/>
     </pattern>
@@ -27,54 +31,52 @@
   <line x1="200" y1="0" x2="200" y2="630" stroke="#10b981" stroke-width="1" stroke-opacity="0.1" stroke-dasharray="4,8"/>
   <line x1="1000" y1="0" x2="1000" y2="630" stroke="#10b981" stroke-width="1" stroke-opacity="0.1" stroke-dasharray="4,8"/>
 
-  <!-- ============================================================== -->
-  <!-- MIOLO CENTRAL ÚTIL GOST (800px x 500px, centrado: x=200, y=65) -->
-  <!-- ============================================================== -->
-
-  <!-- Card Principal do Miolo -->
+  <!-- Card Principal do Miolo Útil (800x500 centrado) -->
   <rect x="220" y="75" width="760" height="480" rx="24" fill="url(#cardGrad)" stroke="#10b981" stroke-width="2" stroke-opacity="0.4"/>
 
-  <!-- Header: Selo de Conformidade GOST -->
-  <rect x="260" y="105" width="160" height="28" rx="6" fill="#047857"/>
-  <text x="340" y="124" text-anchor="middle" font-family="monospace, monospace" font-size="12" font-weight="bold" fill="#ecfdf5" letter-spacing="1.5">
+  <!-- Selos de Identificação -->
+  <rect x="260" y="105" width="130" height="28" rx="6" fill="#047857"/>
+  <text x="325" y="124" text-anchor="middle" font-family="monospace, monospace" font-size="12" font-weight="bold" fill="#ecfdf5" letter-spacing="1.5">
     ★ GOST 1.5.0
   </text>
 
-  <rect x="430" y="105" width="120" height="28" rx="6" fill="#1e293b"/>
-  <text x="490" y="124" text-anchor="middle" font-family="monospace, monospace" font-size="12" font-weight="bold" fill="#38bdf8" letter-spacing="1">
-    RUST 2024
+  <rect x="400" y="105" width="160" height="28" rx="6" fill="#1e293b"/>
+  <text x="480" y="124" text-anchor="middle" font-family="monospace, monospace" font-size="12" font-weight="bold" fill="#38bdf8" letter-spacing="1">
+    ACESSIBILIDADE
   </text>
 
-  <rect x="560" y="105" width="150" height="28" rx="6" fill="#1e293b"/>
-  <text x="635" y="124" text-anchor="middle" font-family="monospace, monospace" font-size="12" font-weight="bold" fill="#a7f3d0" letter-spacing="1">
-    WCAG AAA
+  <rect x="570" y="105" width="160" height="28" rx="6" fill="#1e293b"/>
+  <text x="650" y="124" text-anchor="middle" font-family="monospace, monospace" font-size="12" font-weight="bold" fill="#a7f3d0" letter-spacing="1">
+    AUTO-HOSPEDADO
   </text>
 
-  <!-- Logotipo Integrado no Miolo -->
-  <g transform="translate(260, 160)">
-    <!-- Ícone Vetorial Reduzido -->
-    <rect width="100" height="100" rx="24" fill="#06150e" stroke="#10b981" stroke-width="1.5"/>
-    <path d="M 68,26 A 35,35 0 0,1 68,74" fill="none" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" opacity="0.6"/>
-    <path d="M 58,34 A 24,24 0 0,1 58,66" fill="none" stroke="#38bdf8" stroke-width="4" stroke-linecap="round"/>
-    <path d="M 36,68 C 28,60 24,48 29,36 C 33,26 43,25 47,35 C 50,43 44,52 37,55 C 34,56 33,59 36,61" 
-          fill="none" stroke="#34d399" stroke-width="5" stroke-linecap="round"/>
-    <circle cx="37" cy="45" r="3" fill="#6ee7b7"/>
+  <!-- Logotipo Oficial Hendu Integrado no Miolo -->
+  <g transform="translate(260, 155)">
+    <rect width="90" height="90" rx="22" fill="#06150e" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.6"/>
+    <!-- Símbolo Botânico Centrado sem ondas e com pupila balanceada -->
+    <g transform="translate(45, 45) scale(0.28) translate(-177, -250)">
+      <path d="M 170,350 C 130,310 110,250 135,190 C 155,140 205,135 225,185 C 240,225 210,270 175,285 C 160,290 155,305 168,318 C 185,335 215,330 230,315" 
+            fill="none" stroke="url(#primaryGrad)" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+      <path d="M 148,220 C 175,200 200,215 190,245" 
+            fill="none" stroke="#6ee7b7" stroke-width="11" stroke-linecap="round"/>
+      <circle cx="171" cy="235" r="14" fill="#38bdf8"/>
+    </g>
   </g>
 
   <!-- Título e Pronúncia -->
-  <text x="380" y="210" font-family="system-ui, -apple-system, sans-serif" font-size="54" font-weight="900" fill="#f8fafc" letter-spacing="4">
+  <text x="375" y="205" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="900" fill="#f8fafc" letter-spacing="4">
     HENDU
   </text>
-  <text x="382" y="242" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#34d399" letter-spacing="1">
+  <text x="377" y="235" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#34d399" letter-spacing="1">
     [rren-DÚ] • Guarani: escutar, ouvir, compreender
   </text>
 
-  <!-- Proposta de Valor / Descrição -->
-  <text x="260" y="295" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600" fill="#e2e8f0">
-    Bot de WhatsApp para Acessibilidade Comunitária
+  <!-- Descrição Limpa e Acessível -->
+  <text x="260" y="290" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600" fill="#e2e8f0">
+    Assistente de Acessibilidade para WhatsApp
   </text>
-  <text x="260" y="325" font-family="system-ui, -apple-system, sans-serif" font-size="15" fill="#94a3b8">
-    Auto-hospedado, soberano e multimodal: transcrição de áudio e audiodescrição de fotos e figurinhas.
+  <text x="260" y="320" font-family="system-ui, -apple-system, sans-serif" font-size="15" fill="#94a3b8">
+    Transcreve mensagens de voz em texto legível e descreve fotos e figurinhas com IA especializada.
   </text>
 
   <!-- 3 Pilares em Destaque Visual -->
@@ -83,31 +85,26 @@
     <rect x="0" y="0" width="215" height="90" rx="12" fill="#081810" stroke="#10b981" stroke-width="1" stroke-opacity="0.3"/>
     <text x="16" y="32" font-family="system-ui, sans-serif" font-size="18">🎙️</text>
     <text x="45" y="30" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#f8fafc">ÁUDIO → TEXTO</text>
-    <text x="16" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Transcrição pontual para</text>
-    <text x="16" y="72" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">pessoas surdas (Gemini)</text>
+    <text x="16" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Converte notas de voz em</text>
+    <text x="16" y="72" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">texto legível instantâneo</text>
 
     <!-- Pilar 2 -->
     <rect x="230" y="0" width="215" height="90" rx="12" fill="#081810" stroke="#10b981" stroke-width="1" stroke-opacity="0.3"/>
     <text x="246" y="32" font-family="system-ui, sans-serif" font-size="18">🖼️</text>
-    <text x="275" y="30" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#f8fafc">AUDIODESCRIÇÃO</text>
-    <text x="246" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Descreve imagens e memes</text>
-    <text x="246" y="72" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">para leitores de tela</text>
+    <text x="275" y="30" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#f8fafc">FOTOS &amp; MEMES</text>
+    <text x="246" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Descreve imagens e decifra</text>
+    <text x="246" y="72" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">o humor de figurinhas</text>
 
     <!-- Pilar 3 -->
     <rect x="460" y="0" width="220" height="90" rx="12" fill="#081810" stroke="#10b981" stroke-width="1" stroke-opacity="0.3"/>
     <text x="476" y="32" font-family="system-ui, sans-serif" font-size="18">🛡️</text>
-    <text x="505" y="30" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#f8fafc">CONTROLE DA DONA</text>
-    <text x="476" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Gestão por grupo e contato,</text>
-    <text x="476" y="72" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">aprovação com 1 comando</text>
+    <text x="505" y="30" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#f8fafc">SOBERANO &amp; PRIVADO</text>
+    <text x="476" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Auto-hospedado com modo</text>
+    <text x="476" y="72" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">dona e custódia local</text>
   </g>
 
-  <!-- Rodapé Canônico -->
-  <g transform="translate(260, 485)">
-    <text x="0" y="40" font-family="monospace, monospace" font-size="12" fill="#64748b">
-      LICENÇA: GPL-3.0-or-later • FORJA: codeberg.org/lumenpink/hendu
-    </text>
-    <text x="680" y="40" text-anchor="end" font-family="monospace, monospace" font-size="12" font-weight="bold" fill="#10b981">
-      BANCA DE PROJETOS 2LP
-    </text>
-  </g>
+  <!-- Rodapé do Card -->
+  <text x="260" y="495" font-family="monospace, monospace" font-size="11" fill="#6ee7b7" opacity="0.8">
+    https://hendu.2lp.in • Software Livre sob licença GPL-3.0-or-later
+  </text>
 </svg>

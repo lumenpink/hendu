@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- Gradiente de Fundo Profundo para Todo o Canvas -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a1d13"/>
+      <stop offset="50%" stop-color="#06150e"/>
+      <stop offset="100%" stop-color="#020905"/>
+    </linearGradient>
+
+    <!-- Gradiente Principal Esmeralda / Guarani -->
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="50%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+
+    <!-- Brilho Suave e Sem Cortes (Margem Ampla x/y -150% e width/height 400%) -->
+    <filter id="glow" x="-150%" y="-150%" width="400%" height="400%">
+      <feGaussianBlur stdDeviation="16" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <!-- Sombra de Profundidade com Decaimento Contínuo e Sem Truncamento -->
+    <filter id="dropShadow" x="-150%" y="-150%" width="400%" height="400%">
+      <feDropShadow dx="0" dy="16" stdDeviation="28" flood-color="#10b981" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Fundo Total Preenchido (garante recorte circular limpo sem cantos brancos) -->
+  <rect width="1024" height="1024" fill="url(#bgGrad)"/>
+
+  <!-- Símbolo Central Hendu (Com margem respirável para corte circular do WhatsApp) -->
+  <!-- Centro geométrico em (512, 512), escala equilibrada de 2.85 -->
+  <g transform="translate(512, 512) scale(2.85) translate(-177, -250)" filter="url(#dropShadow)">
+    <!-- Pavilhão de Escuta / Folha Envolvente -->
+    <path d="M 170,350 C 130,310 110,250 135,190 C 155,140 205,135 225,185 C 240,225 210,270 175,285 C 160,290 155,305 168,318 C 185,335 215,330 230,315" 
+          fill="none" 
+          stroke="url(#primaryGrad)" 
+          stroke-width="26" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" 
+          filter="url(#glow)"/>
+    
+    <!-- Nervura Orgânica Central da Folha -->
+    <path d="M 148,220 C 175,200 200,215 190,245" 
+          fill="none" 
+          stroke="#6ee7b7" 
+          stroke-width="11" 
+          stroke-linecap="round"/>
+
+    <!-- Pupila / Ponto de Atenção e Visão com Respiro Balanceado -->
+    <circle cx="171" cy="235" r="14" fill="#38bdf8"/>
+  </g>
+</svg>

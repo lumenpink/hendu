@@ -138,7 +138,7 @@ impl GeminiClient {
         mime_type: &str,
     ) -> GenerateContentRequest {
         let b64_data = BASE64_STANDARD.encode(image_bytes);
-        let prompt = "Descreva esta imagem de forma objetiva e acessível para pessoas com deficiência visual usuárias de leitores de tela. Destaque o sujeito principal, cenário, ações e transcreva qualquer texto visível na imagem. Retorne apenas a audiodescrição, sem introduções ou saudações.";
+        let prompt = "Descreva esta imagem de forma objetiva, acolhedora e clara. Destaque o elemento principal, cenário, detalhes importantes e transcreva com exatidão qualquer texto visível na imagem. Retorne apenas a descrição direta, sem saudações ou comentários extras.";
 
         GenerateContentRequest {
             contents: vec![Content {
@@ -163,7 +163,7 @@ impl GeminiClient {
         mime_type: &str,
     ) -> GenerateContentRequest {
         let b64_data = BASE64_STANDARD.encode(sticker_bytes);
-        let prompt = "Descreva esta figurinha/meme de WhatsApp de forma concisa e acessível para usuários de leitores de tela. Descreva o elemento visual, transcreva qualquer texto presente nela e explique brevemente a emoção, meme ou humor transmitido. Retorne apenas a descrição direta.";
+        let prompt = "Descreva esta figurinha/meme de WhatsApp de forma concisa e expressiva. Descreva o elemento visual, transcreva qualquer texto presente e explique com clareza o humor, a emoção e o contexto do meme. Retorne apenas a descrição direta, sem saudações.";
 
         GenerateContentRequest {
             contents: vec![Content {

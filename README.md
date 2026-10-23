@@ -1,7 +1,6 @@
 # 🌿 Hendu
 
-> **Bot de WhatsApp em Rust para Acessibilidade Comunitária**  
-> *Transcrição de mensagens de áudio para pessoas surdas e audiodescrição de fotos e figurinhas para pessoas cegas ou de baixa visão.*
+> **Hendu** é um assistente auto-hospedado de acessibilidade para WhatsApp que transforma mensagens de voz em texto legível e descreve imagens e figurinhas com inteligência artificial especializada e sem compartilhamento de informações.
 
 [![Conformidade: GOST 1.5.0](https://img.shields.io/badge/GOST-1.5.0-red.svg)](.gost/GOST.md)
 [![SemVer 2.0.0](https://img.shields.io/badge/SemVer-2.0.0-green.svg)](VERSION)
@@ -14,21 +13,21 @@
 
 * **Pronúncia:** *rren-DÚ* (oxítona).
 * **Etimologia:** Palavra de origem Guarani que expressa os atos conjugados de *escutar, ouvir, prestar atenção e compreender*.
-* **Propósito:** Oferecer autonomia comunicacional e quebrar barreiras no aplicativo de mensagens mais utilizado do Brasil, sem intermediários corporativos, sem rastreamento de dados e com custódia soberana.
+* **Propósito:** Oferecer autonomia comunicacional e quebrar barreiras no aplicativo de mensagens mais utilizado do Brasil, sem intermediários corporativos, sem rastreamento de dados e com custódia e privacidade total.
 
 ---
 
 ## ✨ Funcionalidades Principais
 
-* 🎙️ **Transcrição de Voz:** Converte notas de voz (PTT) e arquivos de áudio em texto formatado em português.
-* 🖼️ **Audiodescrição de Fotos:** Analisa imagens e descreve pessoas, objetos, textos em cartazes, cores e cenários para leitores de tela.
-* 🎭 **Audiodescrição de Figurinhas & Memes:** Interpreta o humor, as piadas visuais e os textos presentes em stickers.
-* 🛡️ **Modo Dona & Controle de Acesso (ACL):**
+* 🎙️ **Transcrição de Voz:** Converte notas de voz e áudios em texto legível para quando você não pode ou não quer ouvir áudio no momento, ou para quem prefere leitura.
+* 🖼️ **Descrição de Fotos:** Analisa imagens e descreve o cenário, pessoas, objetos e transcreve com fidelidade qualquer texto presente na imagem.
+* 🎭 **Descrição de Figurinhas & Memes:** O ápice do bot: interpreta o humor, as piadas visuais, os trocadilhos e os textos de stickers e memes.
+* 🛡️ **Modo Dona & Controle Soberano de Acesso (ACL):**
   * Comandos administrativos executados sem necessidade do prefixo `!` no privado da administradora.
   * Normalização inteligente de números telefônicos brasileiros (reconhecendo formatos com 8 e 9 dígitos).
   * Solicitação de acesso acolhedora para contatos e grupos desconhecidos (limite de 1 mensagem de apresentação e silenciamento até aprovação).
 * 👥 **Modos Granulares de Grupo:** Cada grupo autorizado pode operar em modo `ondemand` (sob demanda com comandos) ou `automatic` (espontâneo).
-* 📦 **Ultra-leveza & Eficiência:** Binário estático Musl rodando sobre imagem `scratch` com consumo inferior a 64MB de memória RAM.
+* 🏠 **Auto-hospedado e Independente:** Roda na sua própria infraestrutura, garantindo privacidade absoluta e sem compartilhamento de informações com terceiros.
 
 ---
 
@@ -38,14 +37,14 @@
 | :--- | :--- | :--- |
 | `!ajuda` / `ajuda` | Qualquer chat | Exibe o manual rápido de apoio à acessibilidade. |
 | `!status` / `status` | Qualquer chat | Tempo ativo (uptime) e total de mídias processadas. |
-| `!sobre` / `sobre` | Qualquer chat | Significado Guarani, missão social e licença. |
+| `!sobre` / `sobre` | Qualquer chat | Significado Guarani, missão social e licença livre. |
 | `!ping` / `ping` | Qualquer chat | Teste de conectividade e latência (`pong`). |
 | `!transcrever` | Respondendo a um áudio | Força a transcrição do áudio citado em texto. |
-| `!descrever` / `!ver` | Respondendo a foto/sticker | Audiodescreve a imagem ou meme citado. |
+| `!descrever` / `!ver` | Respondendo a foto/sticker | Descreve detalhadamente a foto ou figurinha citada. |
 | `permitir [modo]` | PV da Administradora | Autoriza o contato ou grupo (modos `ondemand` ou `automatic`). |
 | `bloquear` / `recusar` | PV da Administradora | Revoga a autorização do contato ou grupo. |
 | `modo [ondemand\|auto]` | Dentro de grupo / PV | Alterna o comportamento do grupo entre sob demanda e automático. |
-| `lista` | PV da Administradora | Exibe a lista completa de permissões salvas na ACL. |
+| `lista` | PV da Administradora | Exibe a lista completa de permissões salvas no sistema. |
 
 ---
 

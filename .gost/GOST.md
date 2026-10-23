@@ -633,7 +633,7 @@ Quando um repositório necessitar de regras estritas exclusivas que não pertenc
 
 # Perfil de Implementação: Kollontai
 **Identificador do Perfil:** `kollontai`  
-**Norma Base:** GOST `1.3.0`  
+**Norma Base:** GOST `1.5.0`  
 **Autor:** lumenpink  
 **Status:** Ativo / Produção
 
@@ -1460,7 +1460,13 @@ canonical_url: "https://gostlumen.2lp.in/profile.md"
 * **Perfil Pai:** `https://kollontai.2lp.in/profile.md` (Kollontai)
 * **Precedência:** Qualquer regra explicitada neste documento tem precedência estrita sobre o perfil pai. Todas as regras não mencionadas aqui são herdadas automaticamente do Kollontai e da norma central GOST.
 * **Domínio Canônico:** `https://gostlumen.2lp.in`
-* **Forja Primária:** Codeberg (`https://codeberg.org/lumenpink/gost-profile-lumen`)
+* **Forja Primária Soberana:** Forgejo em `git.2lp.in` (`https://git.2lp.in/lumen/<repo>`)
+* **Remote Git SSH Padrão:** `git@git.2lp.in:lumen/<repo>.git` (Porta 22 padrão via SSH shim do host).
+* **Política de Push Mirrors Duplos (Vitrine Aberta):**
+  - Todo repositório público hospedado no `git.2lp.in` opera com **Push Mirror** automatizado imediato a cada commit (`sync_on_commit: true`) para:
+    1. **Espelho FOSS:** Codeberg (`https://codeberg.org/lumenpink/<repo>`)
+    2. **Espelho Comunitário:** GitHub (`https://github.com/lumenpink/<repo>`)
+  - O desenvolvedor realiza commits e pushes locais exclusivamente para o `origin` (`git@git.2lp.in:lumen/<repo>.git`). A replicação para os espelhos externos é responsabilidade da forja soberana.
 
 ---
 
@@ -1588,6 +1594,9 @@ auto_check = true
 
 # Intervalo mínimo em horas entre consultas remotas de rede (padrão: 24 horas)
 check_interval_hours = 24
+
+# Auto-atualização transparente em segundo plano para a próxima execução (padrão: false)
+auto_update = false
 ```
 
 #### Precedência de Resolução de Canal:
@@ -1641,6 +1650,18 @@ Todo aplicativo sob o perfil Lumen DEVE fornecer os seguintes subcomandos:
 - `<app> config pin [<version>]`
 - `<app> config unpin`
 - `<app> config set-auto-check <true|false>`
+- `<app> config set-auto-update <true|false>`
+
+### 7.7 Mecanismo de Auto-Atualização Transparente (auto_update)
+
+1. **Consentimento Estrito:** Desabilitado por padrão (`auto_update = false`). Nenhuma atualização automática ocorre sem ativação explícita.
+2. **Salvaguarda de Pinning:** Caso `pinned = true` ou se houver versão fixada em `pin`, qualquer rotina de auto-update é sumariamente ignorada.
+3. **Substituição Atômica Não-Destrutiva:** O download e a substituição do binário ocorrem de forma atômica no sistema de arquivos para a próxima inicialização, mantendo a integridade total do processo em execução na RAM.
+4. **Notificação Informativa em `stderr`:**
+   ```text
+   ✨ [<app>] Atualização automática aplicada: vX.Y.Z -> vA.B.C.
+      A nova versão estará ativa na sua próxima execução.
+   ```
 
 ---
 
@@ -1730,6 +1751,73 @@ A interface web da Banca para o público DEVE:
 1. Nenhuma release no Codeberg conterá binários executáveis ou pacotes tarball nos anexos de release.
 2. O repositório Git armazena exclusivamente código-fonte legível, testes e especificações.
 3. Todas as compilações de release geradas pelo Forgejo Runner despacham diretamente os binários para a Banca via Cloudflare R2.
+
+---
+
+## 9. Arquitetura de Entrega Contínua de Containers (Continuous Deployment de Servidores)
+
+Para assegurar atualização contínua, determinística e resiliente de aplicações conteinerizadas em servidores autohospedados (como os nós `obizero`, `obione` e `obitwo`), o perfil Lumen adota o protocolo de **Continuous Deployment (CD) Soberano**.
+
+### 9.1 Descomissionamento Compulsório do Watchtower
+
+1. O uso de agentes opacos de auto-atualização sem auditoria (como Watchtower) é **terminantemente vedado**.
+2. É proibido depender de polling cego ou disparos de webhooks HTTP desprovidos de verificação síncrona de integridade.
+3. Todas as diretivas e rótulos de containers legados `com.centurylinklabs.watchtower.enable` DEVEM ser removidos dos manifestos Docker Compose.
+
+### 9.2 Tipologia de Alvos e Topologia de Deploy
+
+A automação de entrega contínua reconhece duas categorias de nós de infraestrutura:
+
+#### 1. Nó Central de Execução (`obizero` / Deploy Local Imediato)
+- O executor da esteira de CI/CD (`forgejo-runner`) opera diretamente no host `obizero` com o socket do Docker montado (`docker_host: "automount"`).
+- O processo de build (`docker build`) injeta a imagem compilada diretamente no Docker daemon local do host (`lumenpink/<app>:latest` e `:<version>`).
+- O deploy local ocorre **imediatamente e sem qualquer download redundante da internet**:
+  ```bash
+  docker compose -f /home/lumen/stacks/<app>/compose.yml up -d --no-build <app>
+  ```
+- **Sondagem de Healthcheck Ativo:**
+  O job de CD DEVE aguardar de forma síncrona até 15 segundos para confirmar que o container atingiu estado operacional:
+  ```bash
+  for i in $(seq 1 15); do
+    STATUS=$(docker inspect --format='{{.State.Health.Status}}' <app> 2>/dev/null || echo "running")
+    if [ "$STATUS" = "healthy" ] || [ "$STATUS" = "running" ]; then
+      echo "✅ Container <app> operacional em produção!"
+      break
+    fi
+    sleep 1
+  done
+  ```
+- **Protocolo de Rollback em Falha:**
+  Se o container falhar ou entrar em loop de reinício:
+  1. A esteira emite os últimos registros de execução (`docker logs --tail 50 <app>`);
+  2. Executa a restauração da versão estável anterior;
+  3. Aborta o workflow com código de saída diferente de zero.
+- **Limpeza de Armazenamento:**
+  Após o reload bem-sucedido, executa-se compulsòriamente `docker image prune -f` para purgar camadas órfãs.
+
+#### 2. Nós de Borda Remotos (`obione` e `obitwo` / Deploy via Tailscale)
+- Para serviços distribuídos em nós de borda (ex.: `fuxico` e `tatupeba` no `obitwo`, ou `dns` e proxy reverso no `obione`):
+- A esteira publica a imagem oficial no Docker Hub (`lumenpink/<app>:latest`).
+- O deploy remoto é disparado de forma autenticada via SSH através da VPN segura Tailscale:
+  ```bash
+  ssh -o StrictHostKeyChecking=accept-new lumen@<no-tailscale> \
+    "docker compose -f ~/stacks/<app>/compose.yml pull && \
+     docker compose -f ~/stacks/<app>/compose.yml up -d && \
+     docker image prune -f"
+  ```
+- O workflow confirma a saída com sucesso do comando remoto antes de encerrar o job.
+
+### 9.3 Contrato Obrigatório de Healthchecks
+
+Todo container de servidor publicado no ecossistema Lumen DEVE conter probes de integridade declarados no `Dockerfile` ou no respectivo `compose.yml`:
+```yaml
+healthcheck:
+  test: ["CMD-SHELL", "curl -f http://localhost:<port>/healthz || exit 1"]
+  interval: 30s
+  timeout: 3s
+  retries: 3
+  start_period: 10s
+```
 
 ---
 

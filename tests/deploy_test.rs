@@ -105,3 +105,27 @@ fn test_dockerignore_spec() {
     );
     assert!(content.contains(".git"), ".dockerignore deve ignorar .git/");
 }
+
+#[test]
+fn test_copy_humanizada_spec() {
+    let site_path = Path::new("site/index.html");
+    assert!(site_path.exists());
+    let content = fs::read_to_string(site_path).expect("Falha ao ler site/index.html");
+    let content_l = content.to_lowercase();
+    assert!(
+        !content_l.contains("soberan"),
+        "site/index.html não deve conter 'soberano'"
+    );
+    assert!(
+        !content_l.contains("rust puro"),
+        "site/index.html não deve conter 'rust puro'"
+    );
+    assert!(
+        !content_l.contains("na borda"),
+        "site/index.html não deve conter 'na borda'"
+    );
+    assert!(
+        !content_l.contains("wasm"),
+        "site/index.html não deve conter 'wasm'"
+    );
+}

@@ -401,7 +401,7 @@ impl WhatsAppService {
                                             if !image_description_enabled {
                                                 let _ = ctx
                                                     .reply_quoting(
-                                                        "⚠️ Audiodescrição de imagens está desativada.",
+                                                        "⚠️ Descrição de imagens está desativada.",
                                                     )
                                                     .await;
                                                 return;
@@ -418,10 +418,10 @@ impl WhatsAppService {
                                                         Ok(desc) => {
                                                             stats.inc_image();
                                                             let reply_body = format!(
-                                                                "🖼️ Audiodescrição:\n\n{desc}"
+                                                                "🖼️ Descrição da imagem:\n\n{desc}"
                                                             );
                                                             if let Err(e) = ctx.reply_quoting(reply_body).await {
-                                                                error!("Falha ao responder audiodescrição sob demanda: {:?}", e);
+                                                                error!("Falha ao responder descrição de imagem sob demanda: {:?}", e);
                                                             }
                                                         }
                                                         Err(e) => {
@@ -454,7 +454,7 @@ impl WhatsAppService {
                                                         Ok(desc) => {
                                                             stats.inc_sticker();
                                                             let reply_body =
-                                                                format!("🎭 Figurinha:\n\n{desc}");
+                                                                format!("🎭 Descrição da figurinha:\n\n{desc}");
                                                             if let Err(e) = ctx.reply_quoting(reply_body).await {
                                                                 error!("Falha ao responder figurinha sob demanda: {:?}", e);
                                                             }
@@ -471,7 +471,7 @@ impl WhatsAppService {
                                         } else {
                                             let _ = ctx
                                                 .reply_quoting(
-                                                    "⚠️ A mensagem respondida não contém imagem ou figurinha para audiodescrição.",
+                                                    "⚠️ A mensagem respondida não contém imagem ou figurinha para descrever.",
                                                 )
                                                 .await;
                                         }
@@ -585,7 +585,7 @@ impl WhatsAppService {
                                             description.len()
                                         );
                                         let reply_body =
-                                            format!("🖼️ Audiodescrição:\n\n{description}");
+                                            format!("🖼️ Descrição da imagem:\n\n{description}");
                                         if let Err(e) = ctx.reply_quoting(reply_body).await {
                                             error!(
                                                 "Falha ao enviar resposta de audiodescrição: {:?}",
@@ -630,7 +630,7 @@ impl WhatsAppService {
                                             description.len()
                                         );
                                         let reply_body =
-                                            format!("🎭 Figurinha:\n\n{description}");
+                                            format!("🎭 Descrição da figurinha:\n\n{description}");
                                         if let Err(e) = ctx.reply_quoting(reply_body).await {
                                             error!(
                                                 "Falha ao enviar resposta de descrição de figurinha: {:?}",

@@ -187,8 +187,8 @@ pub fn parse_owner_command(input: &str) -> Option<OwnerCommand> {
 pub fn format_welcome_message() -> String {
     "🌿 *Olá! Eu sou o Hendu* (pronuncia-se *rren-DÚ*, oxítona).\n\n\
     *Hendu* é uma palavra de origem Guarani que significa *escutar, ouvir, prestar atenção e compreender*. \
-    Sou um assistente auto-hospedado dedicado à acessibilidade comunitária (transcrição de áudios para pessoas surdas \
-    e audiodescrição de imagens e figurinhas para pessoas cegas ou de baixa visão).\n\n\
+    Hendu é um assistente auto-hospedado de acessibilidade para WhatsApp: transcrevo mensagens de áudio em texto legível \
+    e descrevo fotos e figurinhas com inteligência artificial especializada e sem compartilhamento de informações.\n\n\
     No momento, este contato/grupo ainda não está na minha lista de autorizados.\n\n\
     💬 *Envie uma mensagem a seguir se apresentando* (quem é você ou qual é a proposta deste grupo) \
     para que eu possa encaminhar o pedido para a minha administradora avaliar o acesso."

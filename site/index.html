@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hendu — Bot de WhatsApp para Acessibilidade Comunitária</title>
+  <title>Hendu — Assistente de Acessibilidade para WhatsApp</title>
   
-  <!-- Metatags e Open Graph de Alta Fidelidade (GOST) -->
-  <meta name="description" content="Hendu [rren-DÚ]: Bot de WhatsApp em Rust auto-hospedado para acessibilidade comunitária. Transcrição de áudios e audiodescrição de fotos e figurinhas.">
-  <meta property="og:title" content="Hendu — Acessibilidade Comunitária no WhatsApp">
-  <meta property="og:description" content="Transcrição de áudio para pessoas surdas e audiodescrição de imagens/figurinhas para leitores de tela. Desenvolvido em conformidade com a norma GOST.">
+  <!-- Metatags e Open Graph -->
+  <meta name="description" content="Hendu [rren-DÚ]: Assistente auto-hospedado de acessibilidade para WhatsApp. Transforma mensagens de voz em texto legível e descreve fotos e figurinhas com inteligência artificial especializada e sem compartilhamento de informações.">
+  <meta property="og:title" content="Hendu — Acessibilidade no WhatsApp">
+  <meta property="og:description" content="Transforme áudios em texto e entenda fotos e o humor das figurinhas direto no WhatsApp. Privacidade total e sem compartilhamento de informações.">
   <meta property="og:image" content="assets/hendu-banner.png">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#07150e">
@@ -21,16 +21,16 @@
   <!-- Hero Section -->
   <header class="hero">
     <div class="container">
-      <div class="hero-badge" aria-label="Norma e Conformidade">
-        ★ CONFORMIDADE NORMA GOST 1.5.0 • WCAG AAA
+      <div class="hero-badge" aria-label="Acessibilidade e Privacidade">
+        ACESSIBILIDADE PRÁTICA NO WHATSAPP • PRIVACIDADE TOTAL
       </div>
-      <img src="assets/logo.svg" alt="Logotipo do Hendu: ondas de som e folha Guarani" class="hero-logo-img">
+      <img src="assets/logo.svg" alt="Logotipo do Hendu: símbolo de escuta e visão integrado" class="hero-logo-img">
       <h1 class="hero-title">HENDU</h1>
       <div class="hero-pronunciation">
         [rren-DÚ] • Origem Guarani: <em>escutar, ouvir, prestar atenção e compreender</em>
       </div>
       <p class="hero-tagline">
-        Assistente comunitário auto-hospedado em <strong>Rust</strong> para o WhatsApp, focado em quebrar barreiras comunicacionais: transcreve mensagens de voz para pessoas surdas e audiodescreve imagens e memes para pessoas cegas ou de baixa visão.
+        Hendu é um assistente auto-hospedado de acessibilidade para WhatsApp que transforma mensagens de voz em texto legível e descreve imagens e figurinhas com inteligência artificial especializada e sem compartilhamento de informações.
       </p>
       <div class="hero-actions">
         <a href="#como-funciona" class="btn btn-primary">Ver Demonstrações 💬</a>
@@ -40,18 +40,18 @@
   </header>
 
   <main>
-    <!-- Demonstrações Práticas / Mockups de Chat -->
+    <!-- Demonstrações Práticas / Mockups de Chat com Mídias Reais -->
     <section id="como-funciona">
       <div class="container">
         <h2 class="section-title">Como Funciona na Prática</h2>
         <p class="section-subtitle">
-          Interação natural diretamente no WhatsApp individual ou em grupos. Sem aplicativos adicionais para instalar.
+          Sem aplicativos adicionais para instalar. O Hendu interage diretamente nas suas conversas individuais ou em grupos.
         </p>
 
         <div class="mockup-grid">
 
           <!-- Mockup 1: Transcrição de Áudio -->
-          <article class="mockup-card" aria-label="Exemplo de transcrição de áudio">
+          <article class="mockup-card" aria-label="Exemplo de transcrição de mensagem de áudio">
             <div class="mockup-header">
               <div class="mockup-avatar">H</div>
               <div class="mockup-header-info">
@@ -85,12 +85,12 @@
               </div>
             </div>
             <div class="mockup-footer-desc">
-              <strong>🎙️ Para pessoas surdas:</strong> Converte notas de voz e áudios encaminhados em texto legível instantâneo.
+              <strong>🎙️ Transcrição Instantânea:</strong> Praticidade para quando você não pode ou não quer ouvir áudio no momento, ou para quem prefere ler em texto.
             </div>
           </article>
 
-          <!-- Mockup 2: Audiodescrição de Imagem & Figurinha -->
-          <article class="mockup-card" aria-label="Exemplo de audiodescrição de foto">
+          <!-- Mockup 2: Descrição de Imagem Real com Texto -->
+          <article class="mockup-card" aria-label="Exemplo real de descrição de fotografia com texto">
             <div class="mockup-header">
               <div class="mockup-avatar">H</div>
               <div class="mockup-header-info">
@@ -99,26 +99,55 @@
               </div>
             </div>
             <div class="mockup-body">
-              <!-- Usuário envia foto ou figurinha -->
-              <div class="chat-bubble out">
-                <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; text-align: center; font-size: 1.8rem;">
-                  🖼️ <em>[Foto do pôster comunitário]</em>
-                </div>
+              <!-- Usuário envia foto real -->
+              <div class="chat-bubble out" style="padding: 6px;">
+                <img src="assets/exemplo-foto.jpg" alt="Foto real de mesa de cafeteria com café, croissant e plaquinha com texto" style="width: 100%; max-height: 220px; object-fit: cover; border-radius: 8px; display: block;">
               </div>
 
-              <!-- Resposta do Hendu -->
+              <!-- Resposta Real do Hendu -->
               <div class="chat-bubble in">
-                <div class="quoted-block">🖼️ Imagem anexada</div>
-                <strong>🖼️ Audiodescrição:</strong><br><br>
-                Cartaz vertical de fundo verde com letras brancas em destaque. No topo lê-se: "Oficina Aberta de Hortas Comunitárias". No centro, ilustração de duas mãos segurando uma muda de planta verde brotando da terra. Abaixo: "Sábado, 09h — Entrada Livre".
+                <div class="quoted-block">🖼️ Foto anexada</div>
+                <strong>🖼️ Descrição da imagem:</strong><br><br>
+                Em primeiro plano, sobre uma mesa de madeira rústica, destacam-se os itens de um café da manhã: à esquerda, uma xícara clara com café com leite decorado com latte art em formato de folha e a inscrição "CAFÉ LISBOA"; à direita, um prato com croissant folhado dourado. Logo atrás, há uma plaquinha de madeira com o texto manuscrito:<br><br>
+                <strong>"Café especial do dia: R$ 12,00"</strong><br><br>
+                Ao fundo, vê-se o ambiente acolhedor da cafeteria com grandes janelas, plantas e iluminação âmbar suave.
               </div>
             </div>
             <div class="mockup-footer-desc">
-              <strong>🖼️ Para pessoas cegas:</strong> Descreve cenários, textos, cores e contexto de fotos, imagens e memes.
+              <strong>🖼️ Descrição de Imagem:</strong> Detalha o cenário, as pessoas, os objetos e transcreve com fidelidade qualquer texto visível na foto.
             </div>
           </article>
 
-          <!-- Mockup 3: Modo Dona & Controle Soberano -->
+          <!-- Mockup 3: Descrição de Figurinha Real / Meme (O Ápice do Bot!) -->
+          <article class="mockup-card" aria-label="Exemplo real de interpretação de figurinha de meme">
+            <div class="mockup-header">
+              <div class="mockup-avatar">H</div>
+              <div class="mockup-header-info">
+                <h3>🌿 Hendu Bot</h3>
+                <span>online • acessibilidade</span>
+              </div>
+            </div>
+            <div class="mockup-body">
+              <!-- Usuário envia sticker real -->
+              <div class="chat-bubble out" style="background: transparent; box-shadow: none; padding: 4px; display: flex; justify-content: flex-end;">
+                <img src="assets/exemplo-figurinha.jpg" alt="Figurinha de WhatsApp com gatinho apavorado e texto SOCORRO É SEGUNDA-FEIRA" style="width: 160px; height: 160px; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));">
+              </div>
+
+              <!-- Resposta Real do Hendu -->
+              <div class="chat-bubble in">
+                <div class="quoted-block">🎭 Figurinha / Sticker</div>
+                <strong>🎭 Descrição da figurinha:</strong><br><br>
+                A figurinha mostra um gatinho filhote rajado e felpudo em choque cômico, com olhos arregalados, boca aberta e as patinhas apoiadas nas bochechas em clássica pose dramática de desespero. Na parte superior, lê-se em destaque:<br><br>
+                <strong>"SOCORRO É SEGUNDA-FEIRA"</strong><br><br>
+                O humor reside no contraste entre a extrema fofura do filhote e o pânico exagerado diante do retorno à rotina de trabalho e estudos.
+              </div>
+            </div>
+            <div class="mockup-footer-desc">
+              <strong>🎭 O Ápice do Bot:</strong> Decifra o humor, a piada visual, o contexto e o texto de figurinhas e memes de WhatsApp.
+            </div>
+          </article>
+
+          <!-- Mockup 4: Gestão de Acesso & Controle Direto -->
           <article class="mockup-card" aria-label="Exemplo do modo dona e autorização">
             <div class="mockup-header">
               <div class="mockup-avatar">H</div>
@@ -133,7 +162,7 @@
                 🔔 <strong>Novo pedido de acesso para GRUPO!</strong><br><br>
                 👥 <em>Grupo:</em> Coletivo Acessível SC<br>
                 👤 <em>Solicitante:</em> +55 48 9XXXX-XXXX<br>
-                📝 <em>Apresentação:</em> "Queremos usar o Hendu para transcrever os áudios do nosso grupo de acolhimento."
+                📝 <em>Apresentação:</em> "Queremos usar o Hendu para transcrever os áudios do nosso grupo."
               </div>
 
               <!-- Dona responde com um comando simples sem prefixo ! -->
@@ -147,7 +176,7 @@
               </div>
             </div>
             <div class="mockup-footer-desc">
-              <strong>🛡️ Modo Dona:</strong> Comandos simples no PV sem necessidade de <code>!</code>. Privacidade e controle absoluto.
+              <strong>🛡️ Modo Dona:</strong> Comandos simples no PV sem necessidade de <code>!</code>. Privacidade e controle absoluto sobre quem tem acesso.
             </div>
           </article>
 
@@ -155,44 +184,44 @@
       </div>
     </section>
 
-    <!-- Pilares Técnicos e Princípios -->
+    <!-- Pilares e Benefícios -->
     <section>
       <div class="container">
-        <h2 class="section-title">Pilares da Arquitetura</h2>
+        <h2 class="section-title">Por Que o Hendu é Diferente?</h2>
         <p class="section-subtitle">
-          Construído sob rigorosos critérios de engenharia de software da norma GOST: leveza, soberania e resiliência.
+          Projetado para garantir autonomia, segurança e independência para você e suas conversas.
         </p>
 
         <div class="cards-grid">
           <div class="feature-card">
-            <span class="feature-icon" aria-hidden="true">🦀</span>
-            <h3 class="feature-title">Rust Puro & Scratch</h3>
+            <span class="feature-icon" aria-hidden="true">🏠</span>
+            <h3 class="feature-title">Execução Própria &amp; Privacidade Total</h3>
             <p class="feature-desc">
-              Compilado estaticamente com <code>musl</code> em container <code>scratch</code> ultra-mínimo. Consumo rígido limitado a menos de 64MB de memória RAM.
+              Roda na sua própria máquina ou servidor pessoal. Você não depende de plataformas fechadas nem corre risco de ter seus dados minerados.
             </p>
           </div>
 
           <div class="feature-card">
             <span class="feature-icon" aria-hidden="true">🔒</span>
-            <h3 class="feature-title">Privacidade & SQLite</h3>
+            <h3 class="feature-title">Privacidade & Custódia Local</h3>
             <p class="feature-desc">
-              Sessões criptografadas armazenadas em banco SQLite local. Listas de controle de acesso (ACL) mantidas sob custódia exclusiva de quem hospeda.
+              Sessões e listas de permissão são armazenadas localmente no seu dispositivo. Nenhuma conversa é repassada para bancos de dados públicos.
             </p>
           </div>
 
           <div class="feature-card">
-            <span class="feature-icon" aria-hidden="true">🌐</span>
-            <h3 class="feature-title">Inteligência Multimodal</h3>
+            <span class="feature-icon" aria-hidden="true">🧠</span>
+            <h3 class="feature-title">IA Especializada e Sem Compartilhamento</h3>
             <p class="feature-desc">
-              Integração com modelos multimodais de alta eficiência (Gemini 3.5 Flash Lite) para processar voz em tempo recorde com excelente precisão fonética em português.
+              Processamento veloz com modelo de inteligência artificial dedicado, com alta acurácia fonética e visual, sem retenção nem compartilhamento de informações.
             </p>
           </div>
 
           <div class="feature-card">
-            <span class="feature-icon" aria-hidden="true">⚖️</span>
-            <h3 class="feature-title">Norma GOST</h3>
+            <span class="feature-icon" aria-hidden="true">💬</span>
+            <h3 class="feature-title">Individual ou em Grupo</h3>
             <p class="feature-desc">
-              Desenvolvido seguindo as 9 fases de DD-TDD, com governança de tickets, testes automatizados e conformidade estrita com padrões de software livre.
+              Funciona tanto no privado quanto em grupos comunitários, de forma automática contínua ou sob demanda respondendo a mensagens citadas.
             </p>
           </div>
         </div>
@@ -225,22 +254,22 @@
               <tr>
                 <td><code>!status</code> / <code>status</code></td>
                 <td>Todos os chats</td>
-                <td>Mostra tempo de atividade e total de mídias acessibilizadas.</td>
+                <td>Mostra tempo de atividade e total de mídias processadas.</td>
               </tr>
               <tr>
                 <td><code>!sobre</code> / <code>sobre</code></td>
                 <td>Todos os chats</td>
-                <td>Origem do nome em Guarani, missão social e licença.</td>
+                <td>Origem do nome em Guarani, missão social e licença livre.</td>
               </tr>
               <tr>
                 <td><code>!transcrever</code></td>
                 <td>Respondendo a um áudio</td>
-                <td>Força a transcrição do áudio citado em texto.</td>
+                <td>Força a transcrição do áudio citado em texto legível.</td>
               </tr>
               <tr>
                 <td><code>!descrever</code> / <code>!ver</code></td>
                 <td>Respondendo a foto/sticker</td>
-                <td>Gera a audiodescrição minuciosa da imagem citada.</td>
+                <td>Descreve detalhadamente a foto ou figurinha citada.</td>
               </tr>
               <tr>
                 <td><code>permitir [modo]</code></td>
@@ -260,7 +289,7 @@
               <tr>
                 <td><code>lista</code></td>
                 <td>PV da Administradora</td>
-                <td>Lista todos os contatos e grupos autorizados na ACL.</td>
+                <td>Lista todos os contatos e grupos autorizados no sistema.</td>
               </tr>
             </tbody>
           </table>
@@ -274,9 +303,6 @@
     <div class="container">
       <p>
         <strong>Hendu</strong> — Software Livre sob licença <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank" rel="noopener">GPL-3.0-or-later</a>.
-      </p>
-      <p>
-        Desenvolvido em conformidade com a <strong>Norma GOST 1.5.0</strong>.
       </p>
       <p>
         Forja Oficial no <a href="https://codeberg.org/lumenpink/hendu" target="_blank" rel="noopener">Codeberg</a> • Catálogo na <a href="https://banca.2lp.in" target="_blank" rel="noopener">Banca de Projetos 2LP</a>.
