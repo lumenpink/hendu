@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Configuração de `[profile.release]` com LTO e strip, e linking estático `+crt-static` para musl libc (closes #12).
+
 ### Added
 - Controle de acesso (ACL) com modo dona soberano e comandos sem `!` no PV (#9).
 - Apresentação pedagógica com pronúncia (*rren-DÚ*) e significado Guarani (#9).
