@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hendu — Ajuste Fino do Ícone (Pupila & Respiro)</title>
+  <style>
+    :root {
+      --bg: #030712;
+      --card-bg: #0f172a;
+      --card-border: #1e293b;
+      --emerald: #10b981;
+      --emerald-light: #34d399;
+      --cyan: #38bdf8;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      max-width: 750px;
+    }
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #a7f3d0, #34d399, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: var(--cyan);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-top: 0.8rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2rem;
+      width: 100%;
+      max-width: 1100px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 1.25rem;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    .card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 1.25rem;
+      color: #e2e8f0;
+      width: 100%;
+      text-align: left;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card h2 span.tag {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-weight: normal;
+    }
+    .tag-active {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--emerald-light);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    .tag-old {
+      background: rgba(148, 163, 184, 0.2);
+      color: #94a3b8;
+    }
+    .preview-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      width: 100%;
+    }
+    .preview-box.dark {
+      background: #020617;
+      border: 1px solid #1e293b;
+    }
+    .preview-box.light {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+    }
+    .icon-hero {
+      width: 256px;
+      height: 256px;
+      filter: drop-shadow(0 12px 28px rgba(16, 185, 129, 0.35));
+    }
+    .comparison-row {
+      display: flex;
+      gap: 1.5rem;
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .comparison-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .comparison-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .sizes-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      width: 100%;
+      gap: 1rem;
+      padding: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+    .size-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .size-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .avatar-preview {
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #22c55e;
+      display: inline-block;
+      box-shadow: 0 4px 14px rgba(34, 197, 94, 0.3);
+    }
+    .changes-list {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      line-height: 1.7;
+      width: 100%;
+      padding-left: 1.2rem;
+    }
+    .changes-list strong {
+      color: var(--cyan);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hendu — Ajuste Fino do Ícone (Equilíbrio da Pupila)</h1>
+    <p class="subtitle">O ponto azul foi reajustado para a posição ideal (cx: <strong>171</strong>), retornando exatamente o necessário para manter respiro limpo e harmonia equidistante entre ambas as bordas.</p>
+    <div class="badge">Olho & Escuta • Posição Balanceada (cx: 171) • Respiro Equidistante</div>
+  </header>
+
+  <div class="grid">
+    <!-- Card Especial: Avatar para WhatsApp com Margem Circular -->
+    <div class="card" style="grid-column: 1 / -1; background: linear-gradient(180deg, #0f172a, #07150e); border-color: rgba(16, 185, 129, 0.4);">
+      <h2>
+        <span>🟢 Imagem de Perfil para WhatsApp (PNG 1024×1024)</span>
+        <a href="../assets/hendu-avatar-whatsapp.png" download="hendu-avatar-whatsapp.png" style="background: #10b981; color: #020905; font-size: 0.85rem; font-weight: 700; padding: 0.45rem 1rem; border-radius: 8px; text-decoration: none;">⬇️ Baixar PNG Pronto</a>
+      </h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; text-align: center; max-width: 700px;">
+        Esta imagem foi renderizada em alta definição (1024×1024) com <strong>margem respirável de segurança de 220px</strong> em todas as direções. Ao ser recortada pelo círculo do WhatsApp, o símbolo se mantém perfeitamente centralizado e sem encostar nas bordas.
+      </p>
+
+      <div style="display: flex; gap: 2.5rem; justify-content: center; align-items: center; flex-wrap: wrap; width: 100%; padding: 1rem 0;">
+        <!-- Imagem Quadrada Completa 1024x1024 (com guia do círculo) -->
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem;">
+          <div style="position: relative; width: 260px; height: 260px; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.6); border: 1px solid #334155;">
+            <img src="../assets/hendu-avatar-whatsapp.png" alt="Avatar WhatsApp Quadrado" style="width: 100%; height: 100%; display: block;">
+            <!-- Guia circular tracejada de corte do WhatsApp -->
+            <div style="position: absolute; inset: 0; border: 2px dashed rgba(56, 189, 248, 0.6); border-radius: 50%; pointer-events: none;"></div>
+          </div>
+          <span style="font-size: 0.8rem; color: #94a3b8;">Quadrado 1024px (linha azul = corte WhatsApp)</span>
+        </div>
+
+        <!-- Simulação Real do WhatsApp (Recortado em Círculo) -->
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem;">
+          <div style="width: 260px; height: 260px; border-radius: 50%; overflow: hidden; border: 3px solid #22c55e; box-shadow: 0 12px 35px rgba(34, 197, 94, 0.4);">
+            <img src="../assets/hendu-avatar-whatsapp.png" alt="Avatar WhatsApp Recortado" style="width: 100%; height: 100%; display: block; object-fit: cover;">
+          </div>
+          <span style="font-size: 0.8rem; color: #34d399; font-weight: 600;">Como aparecerá no perfil do WhatsApp</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Atual (Com respiro) -->
+    <div class="card">
+      <h2>
+        Ícone Atualizado
+        <span class="tag tag-active">Novo (com respiro)</span>
+      </h2>
+      <div class="preview-box dark">
+        <img src="../assets/logo.svg" alt="Hendu Logo Atualizado" class="icon-hero">
+      </div>
+      <ul class="changes-list">
+        <li><strong>Efeito Pupila / Olho:</strong> O ponto central agora flutua no vazio interno da curva, dando a clara impressão de íris/pupila atenta.</li>
+        <li><strong>Respiro da Nervura Verde:</strong> O elemento verde não mais colide com a borda do ponto azul.</li>
+        <li><strong>Multimodalidade:</strong> O símbolo agora une perfeitamente <em>escutar</em> (ouvido) e <em>ver</em> (olho).</li>
+      </ul>
+    </div>
+
+    <!-- Card Comparativo & WhatsApp Mockups -->
+    <div class="card">
+      <h2>
+        Aplicações Reais & Escalas
+        <span class="tag tag-active">WhatsApp</span>
+      </h2>
+      
+      <div class="sizes-row">
+        <div class="size-item">
+          <div class="avatar-preview" style="width: 104px; height: 104px;">
+            <img src="../assets/logo.svg" alt="Avatar WhatsApp" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <span class="size-label">Foto Perfil WhatsApp (104px)</span>
+        </div>
+
+        <div class="size-item">
+          <div class="avatar-preview" style="width: 52px; height: 52px;">
+            <img src="../assets/logo.svg" alt="Avatar Mensagem" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <span class="size-label">Lista Chats (52px)</span>
+        </div>
+
+        <div class="size-item">
+          <img src="../assets/logo.svg" alt="Favicon" style="width: 32px; height: 32px; border-radius: 8px;">
+          <span class="size-label">Favicon (32px)</span>
+        </div>
+      </div>
+
+      <h2 style="margin-top: 1.5rem;">Visualização em Fundo Claro</h2>
+      <div class="preview-box light">
+        <img src="../assets/logo.svg" alt="Hendu Logo em fundo claro" style="width: 130px; height: 130px;">
+      </div>
+    </div>
+  </div>
+</body>
+</html>

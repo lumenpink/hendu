@@ -138,7 +138,7 @@ impl GeminiClient {
         mime_type: &str,
     ) -> GenerateContentRequest {
         let b64_data = BASE64_STANDARD.encode(image_bytes);
-        let prompt = "Descreva esta imagem de forma objetiva, acolhedora e clara. Destaque o elemento principal, cenário, detalhes importantes e transcreva com exatidão qualquer texto visível na imagem. Retorne apenas a descrição direta, sem saudações ou comentários extras.";
+        let prompt = "Gere uma audiodescrição desta imagem de forma objetiva, acolhedora e clara. Destaque o elemento principal, cenário, detalhes importantes e transcreva com exatidão qualquer texto visível na imagem. Retorne apenas a descrição direta, sem saudações ou comentários extras.";
 
         GenerateContentRequest {
             contents: vec![Content {
